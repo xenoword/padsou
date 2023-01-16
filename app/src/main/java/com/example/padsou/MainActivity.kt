@@ -13,6 +13,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.padsou.ui.components.Title
 import com.example.padsou.ui.theme.PadsouTheme
+import com.example.padsou.ui.theme.PrimaryOrange
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -24,7 +25,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    Title("Android", Color(R.color.DarkBlue))
+                    Title("Android", PrimaryOrange)
                 }
             }
         }
