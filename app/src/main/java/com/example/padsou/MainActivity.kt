@@ -12,14 +12,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.padsou.navigation.NavGraph
 import com.example.padsou.ui.components.Input
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.navigation.NavGraph
 import com.example.padsou.ui.components.NavigateButton
 import com.example.padsou.ui.components.Title
-import com.example.padsou.ui.theme.PadsouTheme
-import com.example.padsou.ui.theme.Pink
-import com.example.padsou.ui.theme.PrimaryOrange
+import com.example.padsou.ui.pages.Auth.Login
+import com.example.padsou.ui.theme.*
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,11 +27,10 @@ class MainActivity : ComponentActivity() {
                 // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colors.background
+                    //color = MaterialTheme.colors.background
+                    color = LightGray
                 ) {
-                    Greeting();
-                    //NavGraph()
-                    Title("Android", PrimaryOrange)
+                    NavGraph()
                 }
             }
         }

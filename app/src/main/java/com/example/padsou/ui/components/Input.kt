@@ -39,14 +39,13 @@ fun Input (name: String, onValueChange: (String) -> Unit, placeholder: String,
                         maxLines = lineCount,
                         colors = TextFieldDefaults.outlinedTextFieldColors(
                                 focusedBorderColor = Purple200,
-                                unfocusedBorderColor = Color.Transparent),
+                                unfocusedBorderColor = Color.Transparent,
+                                backgroundColor = Color.White),
                         shape = RoundedCornerShape(20.dp),
                         textStyle = androidx.compose.ui.text.TextStyle.Default,
                         modifier = Modifier
-                                //.clip(shape = RoundedCornerShape(10.dp))
                                 .height(((lineCount-1)*17).dp + 55.dp)
                                 .fillMaxWidth(0.85f),
-                                //.border(width = 1.dp, color = Color.Magenta, RoundedCornerShape(20.dp)),
                         value = name,
                         onValueChange = onValueChange,
                         placeholder = { Text(text = placeholder) },
