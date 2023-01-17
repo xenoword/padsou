@@ -43,7 +43,7 @@ fun Register(navController: NavHostController) {
                 placeholder = "Ton mot de passe", kbType = KeyboardType.Password)
 
         Divider(thickness = inputSpacing, color = Color.Transparent)
-        Input(name = pwdConfirmValue, onValueChange = { pwdValue = it },
+        Input(name = pwdConfirmValue, onValueChange = { pwdConfirmValue = it },
                 placeholder = "Confirmer ton mot de passe", kbType = KeyboardType.Password)
 
         Divider(thickness = 60.dp, color = Color.Transparent)
