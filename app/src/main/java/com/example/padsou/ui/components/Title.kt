@@ -21,7 +21,5 @@ import java.util.*
 
 @Composable
 fun Title(text: String, color: Color){
-    Row{
-        Text(text.uppercase(), fontSize = 30.sp, fontWeight = FontWeight.Bold, color = color)
-    }
+    Text(text.uppercase(), fontSize = 30.sp, fontWeight = FontWeight.Bold, color = color)
 }
