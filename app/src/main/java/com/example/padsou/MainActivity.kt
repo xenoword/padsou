@@ -15,9 +15,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.example.padsou.navigation.NavGraph
 import com.example.padsou.ui.components.Input
 import com.example.padsou.ui.pages.Onboarding.Onboarding
-import com.example.padsou.ui.theme.PadsouTheme
-import com.example.padsou.ui.theme.Pink
-import com.example.padsou.ui.theme.PrimaryOrange
+import com.example.padsou.ui.components.NavigateButton
+import com.example.padsou.ui.components.Title
+import com.example.padsou.ui.pages.Auth.Login
+import com.example.padsou.ui.theme.*
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -27,7 +28,8 @@ class MainActivity : ComponentActivity() {
                 // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colors.background
+                    //color = MaterialTheme.colors.background
+                    color = LightGray
                 ) {
                     NavGraph()
                 }
