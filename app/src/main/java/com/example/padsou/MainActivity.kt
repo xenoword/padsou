@@ -12,6 +12,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.padsou.navigation.NavGraph
+import com.example.padsou.ui.components.Input
 import com.example.padsou.ui.pages.Onboarding.Onboarding
 import com.example.padsou.ui.theme.PadsouTheme
 import com.example.padsou.ui.theme.Pink
@@ -27,8 +29,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    Onboarding()
-                    // Greeting("Android")
+                    NavGraph()
                 }
             }
         }

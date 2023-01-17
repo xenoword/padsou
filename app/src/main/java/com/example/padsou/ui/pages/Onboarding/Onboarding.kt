@@ -2,99 +2,150 @@ package com.example.padsou.ui.pages.Onboarding
 
 import android.graphics.Color
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Button
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
-import com.example.padsou.ui.theme.Purple200
-import com.example.padsou.ui.theme.Teal200
-import com.example.padsou.ui.theme.White
+import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
+import com.example.padsou.ui.components.NavigateButton
+import com.example.padsou.ui.components.Title
+import com.example.padsou.ui.theme.*
+import com.google.accompanist.pager.ExperimentalPagerApi
+import com.google.accompanist.pager.HorizontalPager
+import com.google.accompanist.pager.HorizontalPagerIndicator
+import com.google.accompanist.pager.rememberPagerState
+import kotlin.math.roundToInt
 
+@OptIn(ExperimentalPagerApi::class)
 @Composable
-fun Onboarding()
+fun Onboarding(navController: NavHostController)
 {
-    Column() {
-        Text(text = "Pas de sous?")
-        Text(text = "Y'a padsou")
+    val pagerState = rememberPagerState()
+
+    Column(
+        Modifier
+            .fillMaxSize()
+            .background(Purple)
+            .padding(top = 80.dp)
+    ) {
+        //title 1
+        Row(Modifier.align(Alignment.CenterHorizontally)) {
+            Title(text = "Pas de sous?", color = White)
+        }
+        //title 2
+        Row(Modifier.align(Alignment.CenterHorizontally)) {
+            Title(text = "Y'a padsou.", color = Pink)
+        }
+        //Caroussel
         Row(
-            Modifier.height(400.dp)
+            Modifier.height(380.dp).padding(top = 80.dp)
         ) {
             Column() {
-                Row(
-                    Modifier
-                        .background(Purple200)
-                        .fillMaxHeight(0.25F)
-                        .padding(horizontal = 100.dp, vertical = 20.dp)
-                        .fillMaxWidth(),
-                    Arrangement.Center,
-                    Alignment.Bottom
-                ) {
-                    Box(
+                HorizontalPagerIndicator(
+                    pagerState = pagerState,
+                    activeColor = White,
+                    inactiveColor = WhiteTransparent,
+                    indicatorWidth = 20.dp,
+                    indicatorHeight = 5.dp,
+                    spacing = 8.dp,
+                    modifier = Modifier
+                        .align(Alignment.CenterHorizontally)
+                        .fillMaxHeight(0.05F),
+                )
+                HorizontalPager(
+                    count = 3,
+                    state = pagerState
+                )
+                {
+                    Row(
                         Modifier
-                            .width(30.dp)
-                            .height(5.dp)
-                            .padding(horizontal = 2.dp)
-                            .clip(RoundedCornerShape(10.dp))
-                            .background(color = White, shape = RoundedCornerShape(40.dp)))
-                    Box(
-                        Modifier
-                            .width(30.dp)
-                            .height(5.dp)
-                            .padding(horizontal = 2.dp)
-                            .clip(RoundedCornerShape(10.dp))
-                            .background(color = White, shape = RoundedCornerShape(40.dp)))
-                    Box(
-                        Modifier
-                            .width(30.dp)
-                            .height(5.dp)
-                            .padding(horizontal = 2.dp)
-                            .clip(RoundedCornerShape(10.dp))
-                            .background(color = White, shape = RoundedCornerShape(40.dp)))
-                }
-                Row(
-                    Modifier
-                        .background(Teal200)
-                        .fillMaxHeight(0.75F)
-                        .fillMaxWidth(),
-                    Arrangement.Center,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Column(
-                        Modifier
-                            .fillMaxHeight(0.8F)
-                            .width(190.dp)
-                            .clip(shape = RoundedCornerShape(30.dp))
-                            .background(White)
-                            .padding(all = 30.dp),
+                            .fillMaxHeight(0.95F)
+                            .fillMaxWidth(),
+                        Arrangement.Center,
+                        verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Row {
-                            Column() {
+                        Column(
+                            Modifier
+                                .fillMaxHeight(0.8F)
+                                .width(230.dp)
+                                .clip(shape = RoundedCornerShape(30.dp))
+                                .background(White)
+                                .padding(10.dp)
+                        ) {
+                            Row(
+                                Modifier
+                                    .fillMaxHeight(0.5F)
+                                    .fillMaxWidth()) {
+                                Column(
+                                    Modifier
+                                        .fillMaxHeight()
+                                        .fillMaxWidth(0.5F)
+                                        .background(color = Teal200)
+                                ) {
 
+                                }
+                                Column(
+                                    Modifier
+                                        .fillMaxHeight()
+                                        .fillMaxWidth()
+                                        .background(color = Purple200)
+                                ) {
+
+                                }
                             }
-                            Column() {
+                            Row(
+                                Modifier
+                                    .fillMaxHeight()
+                                    .fillMaxWidth()) {
+                                Column(
+                                    Modifier
+                                        .fillMaxHeight()
+                                        .fillMaxWidth(0.5F)
+                                        .background(color = Purple500)
+                                ) {
 
+                                }
+                                Column(
+                                    Modifier
+                                        .fillMaxHeight()
+                                        .fillMaxWidth()
+                                        .background(color = Purple700)
+                                ) {
+
+                                }
                             }
-                        }
-                        Row {
-                            Column() {
-
-                            }
-                            Column() {
-
-                            }   
                         }
                     }
                 }
             }
         }
-        Text(text = "Accède aux 500 bons plans qu'on te propose chaque mois")
-        Button(onClick = { /*TODO*/ }) {
-            
+        //description
+        Text(modifier = Modifier
+            .fillMaxWidth(0.6F)
+            .align(Alignment.CenterHorizontally),
+            text = "Accède aux 500 bons plans qu'on te propose chaque mois",
+            fontSize = 16.sp,
+            color = White,
+            textAlign = TextAlign.Center,
+            )
+        //button
+        Row(modifier = Modifier.fillMaxWidth(0.7F).fillMaxHeight().align(Alignment.CenterHorizontally).padding(bottom = 30.dp),Arrangement.Center, Alignment.Bottom) {
+            NavigateButton(
+                text = "C'EST PARTI !",
+                backgroundcolor = Pink,
+                navController = navController,
+                classDestination = "Onboarding"
+            )
         }
     }
 }
