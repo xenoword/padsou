@@ -7,10 +7,12 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.padsou.ui.components.Input
 import com.example.padsou.ui.components.Title
 import com.example.padsou.ui.theme.PadsouTheme
 import com.example.padsou.ui.theme.PrimaryOrange
@@ -25,7 +27,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    Title("Android", PrimaryOrange)
+                    Greeting();
                 }
             }
         }
@@ -33,14 +35,17 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun Greeting(name: String) {
-    Text(text = "Hello $name!")
+fun Greeting() {
+    var text by remember { mutableStateOf("") }
+
+    Input(name = text, onValueChange = { newText ->
+        text = newText }, placeholder = "zebi rempli moi")
 }
 
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
     PadsouTheme {
-        Greeting("Android")
+        Greeting()
     }
 }
