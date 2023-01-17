@@ -144,7 +144,7 @@ fun Onboarding(navController: NavHostController)
                 text = "C'EST PARTI !",
                 backgroundcolor = Pink,
                 navController = navController,
-                classDestination = "Onboarding"
+                classDestination = "Login"
             )
         }
     }

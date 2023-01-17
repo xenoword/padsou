@@ -47,8 +47,10 @@ fun Login(navController: NavHostController) {
                 modifier = Modifier.fillMaxWidth(0.85f))
 
         Divider(thickness = 40.dp, color = Color.Transparent)
-        NavigateButton(text = "SE CONNECTER", backgroundcolor = MediumBlue,
+        Row(Modifier.fillMaxWidth(0.85F).align(Alignment.CenterHorizontally)) {
+            NavigateButton(text = "SE CONNECTER", backgroundcolor = MediumBlue,
                 navController = navController, classDestination = "Home")
+        }
 
         Spacer(modifier = Modifier.weight(1f))
 
