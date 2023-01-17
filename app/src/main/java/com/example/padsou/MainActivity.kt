@@ -14,6 +14,7 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.padsou.navigation.NavGraph
 import com.example.padsou.ui.components.Input
+import com.example.padsou.ui.pages.Onboarding.Onboarding
 import com.example.padsou.ui.components.NavigateButton
 import com.example.padsou.ui.components.Title
 import com.example.padsou.ui.pages.Auth.Login
