@@ -17,7 +17,11 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import com.example.padsou.R
+import com.example.padsou.models.Plan
+import com.example.padsou.models.User
 import com.example.padsou.ui.components.NavigateButton
+import com.example.padsou.ui.components.PlanPreview
 import com.example.padsou.ui.components.Title
 import com.example.padsou.ui.theme.*
 import com.google.accompanist.pager.ExperimentalPagerApi
@@ -36,7 +40,7 @@ fun Onboarding(navController: NavHostController)
         Modifier
             .fillMaxSize()
             .background(Purple)
-            .padding(top = 80.dp)
+            .padding(top = 60.dp)
     ) {
         //title 1
         Row(Modifier.align(Alignment.CenterHorizontally)) {
@@ -48,7 +52,7 @@ fun Onboarding(navController: NavHostController)
         }
         //Caroussel
         Row(
-            Modifier.height(380.dp).padding(top = 80.dp)
+            Modifier.padding(top = 60.dp)
         ) {
             Column() {
                 HorizontalPagerIndicator(
@@ -60,68 +64,111 @@ fun Onboarding(navController: NavHostController)
                     spacing = 8.dp,
                     modifier = Modifier
                         .align(Alignment.CenterHorizontally)
-                        .fillMaxHeight(0.05F),
+                        .height(40.dp)
+                        .padding(bottom = 30.dp),
                 )
                 HorizontalPager(
                     count = 3,
                     state = pagerState
                 )
                 {
-                    Row(
-                        Modifier
-                            .fillMaxHeight(0.95F)
-                            .fillMaxWidth(),
+                    Row(Modifier,
                         Arrangement.Center,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Column(
                             Modifier
-                                .fillMaxHeight(0.8F)
-                                .width(230.dp)
                                 .clip(shape = RoundedCornerShape(30.dp))
                                 .background(White)
                                 .padding(10.dp)
                         ) {
-                            Row(
-                                Modifier
-                                    .fillMaxHeight(0.5F)
-                                    .fillMaxWidth()) {
+                            Row {
                                 Column(
                                     Modifier
-                                        .fillMaxHeight()
-                                        .fillMaxWidth(0.5F)
-                                        .background(color = Teal200)
+                                        .padding(10.dp, 10.dp, 5.dp, 5.dp)
                                 ) {
-
+                                    PlanPreview(
+                                        plan = Plan(
+                                            1,
+                                            "Coucou",
+                                            "les loulou",
+                                            R.drawable.nier_automata_banner,
+                                            User(
+                                                1,
+                                                "2B",
+                                                R.drawable.qmjbo59wwvhy,
+                                                "mail@mail.mail",
+                                                "pb_ZÈ)EGV_ZEPSDGBCÈYERGVÀB_'PZEUIGHFC)_UZE"),
+                                            12,
+                                            4,
+                                            "CDLAMERDE, OSKOUR",
+                                            "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+                                        ),
+                                        navController = navController,
+                                        height = 120.dp,
+                                        width = 120.dp)
                                 }
                                 Column(
                                     Modifier
-                                        .fillMaxHeight()
-                                        .fillMaxWidth()
-                                        .background(color = Purple200)
+                                        .padding(5.dp, 10.dp, 10.dp, 5.dp)
                                 ) {
-
+                                    PlanPreview(
+                                        plan = Plan(
+                                            1,
+                                            "Coucou",
+                                            "les loulou",
+                                            R.drawable.nier_automata_banner,
+                                            User(1, "2B", R.drawable.qmjbo59wwvhy, "mail@mail.mail", "pb_ZÈ)EGV_ZEPSDGBCÈYERGVÀB_'PZEUIGHFC)_UZE"),
+                                            12,
+                                            4,
+                                            "CDLAMERDE, OSKOUR",
+                                            "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+                                        ),
+                                        navController = navController,
+                                        height = 120.dp,
+                                        width = 120.dp)
                                 }
                             }
-                            Row(
-                                Modifier
-                                    .fillMaxHeight()
-                                    .fillMaxWidth()) {
+                            Row {
                                 Column(
                                     Modifier
-                                        .fillMaxHeight()
-                                        .fillMaxWidth(0.5F)
-                                        .background(color = Purple500)
+                                        .padding(10.dp, 10.dp, 5.dp, 5.dp)
                                 ) {
-
+                                    PlanPreview(
+                                        plan = Plan(
+                                            1,
+                                            "Coucou",
+                                            "les loulou",
+                                            R.drawable.nier_automata_banner,
+                                            User(1, "2B", R.drawable.qmjbo59wwvhy, "mail@mail.mail", "pb_ZÈ)EGV_ZEPSDGBCÈYERGVÀB_'PZEUIGHFC)_UZE"),
+                                            12,
+                                            4,
+                                            "CDLAMERDE, OSKOUR",
+                                            "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+                                        ),
+                                        navController = navController,
+                                        height = 120.dp,
+                                        width = 120.dp)
                                 }
                                 Column(
                                     Modifier
-                                        .fillMaxHeight()
-                                        .fillMaxWidth()
-                                        .background(color = Purple700)
+                                        .padding(5.dp, 10.dp, 10.dp, 5.dp)
                                 ) {
-
+                                    PlanPreview(
+                                        plan = Plan(
+                                            1,
+                                            "Coucou les loulou",
+                                            "il fait des trucs un peu malsain",
+                                            R.drawable.nier_automata_banner,
+                                            User(1, "2B", R.drawable.qmjbo59wwvhy, "mail@mail.mail", "pb_ZÈ)EGV_ZEPSDGBCÈYERGVÀB_'PZEUIGHFC)_UZE"),
+                                            12,
+                                            4,
+                                            "CDLAMERDE, OSKOUR",
+                                            "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+                                        ),
+                                        navController = navController,
+                                        height = 120.dp,
+                                        width = 120.dp)
                                 }
                             }
                         }
@@ -132,14 +179,19 @@ fun Onboarding(navController: NavHostController)
         //description
         Text(modifier = Modifier
             .fillMaxWidth(0.6F)
-            .align(Alignment.CenterHorizontally),
+            .align(Alignment.CenterHorizontally)
+            .padding(top=30.dp),
             text = "Accède aux 500 bons plans qu'on te propose chaque mois",
             fontSize = 16.sp,
             color = White,
             textAlign = TextAlign.Center,
             )
         //button
-        Row(modifier = Modifier.fillMaxWidth(0.7F).fillMaxHeight().align(Alignment.CenterHorizontally).padding(bottom = 30.dp),Arrangement.Center, Alignment.Bottom) {
+        Row(modifier = Modifier
+            .fillMaxWidth(0.7F)
+            .fillMaxHeight()
+            .align(Alignment.CenterHorizontally)
+            .padding(bottom = 30.dp),Arrangement.Center, Alignment.Bottom) {
             NavigateButton(
                 text = "C'EST PARTI !",
                 backgroundcolor = Pink,
