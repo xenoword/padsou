@@ -27,10 +27,10 @@ import com.example.padsou.ui.theme.Teal200
 fun PlanPreview(plan: Plan, navController: NavHostController, height: Dp, width: Dp){
 
     Column(Modifier.height(height).width(width)) {
-        Box(Modifier.fillMaxHeight(0.66F).fillMaxWidth()){
+        Box(Modifier.fillMaxHeight(0.7F).fillMaxWidth()){
             Row(Modifier.fillMaxSize()) {
                 Image(
-                    painter = painterResource(id = plan.img),
+                    painter = painterResource(id = plan.image),
                     contentDescription = "Plan image",
                     contentScale = ContentScale.Crop,
                     modifier = Modifier
@@ -45,7 +45,8 @@ fun PlanPreview(plan: Plan, navController: NavHostController, height: Dp, width:
                     contentDescription = "Author profile picture",
                     contentScale = ContentScale.Crop,
                     modifier = Modifier
-                        .fillMaxSize(0.3F)
+                        .fillMaxWidth(0.3F*0.7F)
+                        .fillMaxHeight(0.3F)
                         .border(
                             BorderStroke(2.dp, Color.White),
                             CircleShape
