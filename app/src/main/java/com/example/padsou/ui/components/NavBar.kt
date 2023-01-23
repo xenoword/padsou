@@ -24,8 +24,7 @@ import com.example.padsou.ui.theme.MediumBlue
 
 @Composable
 fun NavBar(navController: NavHostController) {
-    Card(elevation = 1.dp
-            ,shape = RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp)) {
+    Card(elevation = 1.dp, shape = RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp)) {
         Row(verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceEvenly,
                 modifier = Modifier
@@ -47,12 +46,12 @@ fun NavBar(navController: NavHostController) {
 @Composable
 fun NavButton(navController: NavHostController, routeName: String, iconImgVector: ImageVector) {
     IconButton(
-
             onClick = { navController.navigate(routeName) },
-            modifier = Modifier.size(50.dp)
+            modifier = Modifier
+                    .size(50.dp)
                     .background(LightGray, RoundedCornerShape(5.dp))) {
         Icon(iconImgVector, null,
                 Modifier.fillMaxSize(0.8f),
-        tint = MediumBlue)
+                tint = MediumBlue)
     }
 }
