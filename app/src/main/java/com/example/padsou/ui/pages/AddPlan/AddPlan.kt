@@ -59,15 +59,11 @@ fun AddPlan(navController: NavHostController) {
                         fontSize = 20.sp)
             }
 
-
-            val scrollState = rememberScrollState()
             Divider(thickness = 40.dp, color = Color.Transparent)
             Surface(shape = RoundedCornerShape(topStart = 40.dp, topEnd = 40.dp),
-                    modifier = Modifier) {
+                    color = LightGray) {
                 Row(modifier = Modifier
                         .fillMaxSize()
-                        .background(LightGray,
-                                RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp))
                         .padding(horizontal = 30.dp, vertical = 15.dp)
                         .verticalScroll(rememberScrollState())) {
 
