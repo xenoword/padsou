@@ -17,7 +17,7 @@ import androidx.navigation.NavHostController
 
 @Composable
 fun NavBar(navController: NavHostController) {
-    Card(elevation = 1.dp, shape = RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp)) {
+    Card(elevation = 16.dp, shape = RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp)) {
         Row(verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceEvenly,
                 modifier = Modifier
