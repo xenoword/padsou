@@ -3,8 +3,8 @@ package com.example.padsou.ui.pages.Home
 import android.provider.ContactsContract.CommonDataKinds.Im
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.GridCells
-import androidx.compose.foundation.lazy.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material.*
@@ -205,13 +205,13 @@ fun Home(navController: NavHostController, plans: MutableList<Plan>) {
                                         ) {
                                             append("Voir tout")
                                         }
-                                    }, onClick = { navController.navigate("Search/") }
+                                    }, onClick = { navController.navigate("Search/ ") }
                             )
                         }
 
                         val cellSize = 160.dp
                         LazyVerticalGrid(
-                                cells = GridCells.Fixed(2)
+                                columns = GridCells.Fixed(2)
                         ) {
                             items(plans.size) { index ->
                                 Card(shape = RoundedCornerShape(10.dp),

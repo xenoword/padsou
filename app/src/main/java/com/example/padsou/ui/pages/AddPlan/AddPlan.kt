@@ -134,7 +134,20 @@ fun AddPlan(navController: NavHostController) {
 
                                         Divider(thickness = 20.dp, color = Color.Transparent)
                                         IconButton(
-                                                onClick = { /* TODO */ },
+                                                onClick = { // TODO
+
+
+
+
+
+
+
+
+
+
+
+
+                                                          },
                                                 modifier = Modifier
                                                         .size(200.dp)
                                                         .background(MediumBlue, RoundedCornerShape(10.dp))) {
