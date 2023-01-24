@@ -3,6 +3,7 @@ package com.example.padsou.ui.components
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
@@ -18,6 +19,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import com.example.padsou.R
 import com.example.padsou.ui.theme.LightGray
 import com.example.padsou.ui.theme.MediumBlue
 
@@ -42,7 +44,7 @@ fun IconNavButtonWithText(navController: NavHostController, routeName: String,
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         IconButton(
                 onClick = { navController.navigate(routeName) },
-                modifier = Modifier
+                modifier = Modifier.padding(bottom = 5.dp)
                         .size(60.dp)
                         .background(bgAndTextColor, RoundedCornerShape(5.dp))) {
             Icon(painter, null,
@@ -50,6 +52,6 @@ fun IconNavButtonWithText(navController: NavHostController, routeName: String,
                     tint = iconColor)
         }
 
-        Text(text, color = bgAndTextColor, fontSize = 12.sp, fontWeight = FontWeight.Bold)
+        Title(text = text, color = bgAndTextColor, size = 10.sp)
     }
 }

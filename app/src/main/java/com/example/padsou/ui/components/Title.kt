@@ -18,9 +18,10 @@ import androidx.compose.ui.text.toUpperCase
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.padsou.ui.theme.Typography
 import java.util.*
 
 @Composable
 fun Title(text: String, color: Color, size: TextUnit = 30.sp){
-    Text(text.uppercase(), fontSize = size, fontWeight = FontWeight.Bold, color = color)
+    Text(text.uppercase(), style = Typography.h1, fontSize = size, color = color)
 }
