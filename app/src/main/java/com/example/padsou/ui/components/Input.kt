@@ -45,10 +45,10 @@ fun Input (name: String, onValueChange: (String) -> Unit, placeholder: String,
                         textStyle = androidx.compose.ui.text.TextStyle.Default,
                         modifier = Modifier
                                 .height(((lineCount-1)*17).dp + 55.dp)
-                                .fillMaxWidth(0.85f),
+                                .fillMaxWidth(),
                         value = name,
                         onValueChange = onValueChange,
-                        placeholder = { Text(text = placeholder) },
+                        placeholder = { Text(text = placeholder, color = Color(0xFFA6A6A6)) },
                 )
         }
 }

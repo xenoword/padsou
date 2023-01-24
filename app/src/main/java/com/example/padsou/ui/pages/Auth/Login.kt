@@ -28,44 +28,53 @@ fun Login(navController: NavHostController) {
     var mailValue by remember { mutableStateOf("") }
     var pwdValue by remember { mutableStateOf("") }
 
-    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-        Divider(thickness = 80.dp, color = Color.Transparent)
-        Title(text = "Te revoilà ! 🔥", color = Color.Black)
-        Text(text = "Reviens vite pour profiter\n des bons plans", textAlign = TextAlign.Center)
+    Column(modifier = Modifier
+            .fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally) {
+        Column(
+                modifier = Modifier
+                        .fillMaxWidth(0.85f),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Divider(thickness = 80.dp, color = Color.Transparent)
+            Title(text = "Te revoilà ! 🔥", color = Color.Black)
+            Text(text = "Reviens vite pour profiter\n des bons plans", textAlign = TextAlign.Center)
 
-        Divider(thickness = 40.dp, color = Color.Transparent)
-        Input(name = mailValue, onValueChange = { mailValue = it },
-                placeholder = "Ton adresse e-mail")
+            Divider(thickness = 40.dp, color = Color.Transparent)
+            Input(name = mailValue, onValueChange = { mailValue = it },
+                    placeholder = "Ton adresse e-mail")
 
-        Divider(thickness = 20.dp, color = Color.Transparent)
-        Input(name = pwdValue, onValueChange = { pwdValue = it },
-                placeholder = "Ton mot de passe", kbType = KeyboardType.Password)
+            Divider(thickness = 20.dp, color = Color.Transparent)
+            Input(name = pwdValue, onValueChange = { pwdValue = it },
+                    placeholder = "Ton mot de passe", kbType = KeyboardType.Password)
 
-        Divider(thickness = 20.dp, color = Color.Transparent)
+            Divider(thickness = 20.dp, color = Color.Transparent)
 
-        Text("Mot de passe oublié ?", textAlign = TextAlign.End,
-                modifier = Modifier.fillMaxWidth(0.85f))
+            Text("Mot de passe oublié ?", textAlign = TextAlign.End,
+                    modifier = Modifier.fillMaxWidth(0.85f))
 
-        Divider(thickness = 40.dp, color = Color.Transparent)
-        Row(Modifier.fillMaxWidth(0.85F).align(Alignment.CenterHorizontally)) {
-            NavigateButton(text = "SE CONNECTER", backgroundcolor = MediumBlue,
-                navController = navController, classDestination = "Home")
-        }
+            Divider(thickness = 40.dp, color = Color.Transparent)
+            Row() {
+                NavigateButton(text = "SE CONNECTER", backgroundcolor = MediumBlue,
+                        navController = navController, classDestination = "Home")
+            }
 
-        Spacer(modifier = Modifier.weight(1f))
+            Spacer(modifier = Modifier.weight(1f))
 
-        Row(verticalAlignment = Alignment.Bottom) {
-            ClickableText(
-                    modifier = Modifier.padding(bottom = 35.dp),
-                    text = buildAnnotatedString {
-                        withStyle(style = SpanStyle(color = Color.Black)) {
-                            append("Pas encore inscrit ?")
-                        }
-                        withStyle(style = SpanStyle(color = MediumBlue)) {
-                            append(" Allez viens !")
-                        }
-                    }, onClick = { navController.navigate("Register") }
-            )
+            Row(verticalAlignment = Alignment.Bottom) {
+                ClickableText(
+                        modifier = Modifier.padding(bottom = 35.dp),
+                        text = buildAnnotatedString {
+                            withStyle(style = SpanStyle(color = Color.Black)) {
+                                append("Pas encore inscrit ?")
+                            }
+                            withStyle(style = SpanStyle(color = MediumBlue)) {
+                                append(" Allez viens !")
+                            }
+                        }, onClick = { navController.navigate("Register") }
+                )
+            }
         }
     }
 }
