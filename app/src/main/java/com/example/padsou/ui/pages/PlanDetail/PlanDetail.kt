@@ -9,7 +9,7 @@ import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.BlurredEdgeTreatment
@@ -27,27 +27,29 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
 import com.example.padsou.R
 import com.example.padsou.models.Plan
 import com.example.padsou.models.User
 import com.example.padsou.ui.components.ExternalLinkButton
 import com.example.padsou.ui.components.Title
 import com.example.padsou.ui.theme.*
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.firestore.ktx.toObject
+import com.google.firebase.ktx.Firebase
 
 @Composable
 fun PlanDetail(planId: String) {
+    val db = Firebase.firestore
+    var plan: Plan by remember { mutableStateOf(Plan()) }
 
-    val plan = Plan(
-        1,
-        "Coucou les loulou",
-        "les loulou zebi je vous baise",
-        R.drawable.nier_automata_banner,
-        User(1, "2B", R.drawable.qmjbo59wwvhy, "mail@mail.mail", "pb_ZÈ)EGV_ZEPSDGBCÈYERGVÀB_'PZEUIGHFC)_UZE"),
-        12,
-        4,
-        "CDLAMERDE, OSKOUR uzbdvpiq rzej biueziufh bzehsbfzebsdoua fbpize  fuhbepdsbizVJER NJVB REJVBHEJFBVJHQEBKFDNV JDFBVHJB ESFHVBJ BFVHJQBEJVBJKDQNKJVNDFJVENRV F VR GBT N TYHTYEHETY HTRDHDTHBDTHRDTB SRTBTRBSRBSTBYTEBGFSBFG RTBFSBSRTHYETHGFB SRGRGSDFVBSGBTYZFBFSDBTRZFBSB fu bedpf bpéiuzebfpiu zejsbnji edbpeidsh iueh fiubehpf hiebf zieb fzeijfnuizehuicj^pçs hcuiqbjhezfpqsdhci uZEBFJBEDPVBIUP BEHIFBUIE Bdvhjqd bspiv'",
-        "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-    )
+    db.collection("plans")
+        .document(planId)
+        .get()
+        .addOnSuccessListener { document ->
+            plan = document.toObject()!!
+            plan!!.id = planId
+        }
 
     Column(
         Modifier
@@ -60,8 +62,8 @@ fun PlanDetail(planId: String) {
             .clip(RoundedCornerShape(0.dp, 0.dp, 30.dp, 30.dp))
         )
         {
-            Image(
-                painter = painterResource(id = plan.image),
+            AsyncImage(
+                model = plan.image,
                 contentDescription = "Plan image",
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
@@ -106,8 +108,8 @@ fun PlanDetail(planId: String) {
                     Row(Modifier.padding(bottom = 20.dp)) {
                         Box(Modifier.fillMaxWidth(0.15F))
                         {
-                            Image(
-                                painter = painterResource(id = plan.author.profilePicture),
+                            AsyncImage(
+                                model = plan.author.profilePicture,
                                 contentDescription = "Author profile picture",
                                 contentScale = ContentScale.Crop,
                                 modifier = Modifier

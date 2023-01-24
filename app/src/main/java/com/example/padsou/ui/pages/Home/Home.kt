@@ -1,17 +1,16 @@
 package com.example.padsou.ui.pages.Home
 
-import android.provider.ContactsContract.CommonDataKinds.Im
+import android.util.Log
+import androidx.compose.material.Divider
+import androidx.compose.material.Text
+import androidx.compose.runtime.Composable
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.GridCells
-import androidx.compose.foundation.lazy.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.AccountCircle
-import androidx.compose.material.icons.rounded.AddCircle
-import androidx.compose.material.icons.rounded.Home
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -25,113 +24,47 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import com.example.padsou.models.Plan
+import com.example.padsou.ui.components.PlanPreview
 import com.example.padsou.ui.components.*
 import com.example.padsou.ui.theme.LightGray
 import com.example.padsou.ui.theme.MediumBlue
 import com.example.padsou.R
-import com.example.padsou.models.Plan
 import com.example.padsou.models.User
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.firestore.ktx.toObject
+import com.google.firebase.ktx.Firebase
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun Home(navController: NavHostController, plans: MutableList<Plan>) {
-    plans.addAll(arrayOf(Plan(
-            1,
-            "Coucou",
-            "les loulou",
-            R.drawable.nier_automata_banner,
-            User(
-                    1,
-                    "2B",
-                    R.drawable.qmjbo59wwvhy,
-                    "mail@mail.mail",
-                    "pb_ZÈ)EGV_ZEPSDGBCÈYERGVÀB_'PZEUIGHFC)_UZE"),
-            12,
-            4,
-            "CDLAMERDE, OSKOUR",
-            "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-    ),
-            Plan(
-                    1,
-                    "Coucou",
-                    "les loulou",
-                    R.drawable.nier_automata_banner,
-                    User(
-                            1,
-                            "2B",
-                            R.drawable.qmjbo59wwvhy,
-                            "mail@mail.mail",
-                            "pb_ZÈ)EGV_ZEPSDGBCÈYERGVÀB_'PZEUIGHFC)_UZE"),
-                    12,
-                    4,
-                    "CDLAMERDE, OSKOUR",
-                    "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-            ),
-            Plan(
-                    1,
-                    "Coucou",
-                    "les loulou",
-                    R.drawable.nier_automata_banner,
-                    User(
-                            1,
-                            "2B",
-                            R.drawable.qmjbo59wwvhy,
-                            "mail@mail.mail",
-                            "pb_ZÈ)EGV_ZEPSDGBCÈYERGVÀB_'PZEUIGHFC)_UZE"),
-                    12,
-                    4,
-                    "CDLAMERDE, OSKOUR",
-                    "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-            ),
-            Plan(
-                    1,
-                    "Coucou",
-                    "les loulou",
-                    R.drawable.nier_automata_banner,
-                    User(
-                            1,
-                            "2B",
-                            R.drawable.qmjbo59wwvhy,
-                            "mail@mail.mail",
-                            "pb_ZÈ)EGV_ZEPSDGBCÈYERGVÀB_'PZEUIGHFC)_UZE"),
-                    12,
-                    4,
-                    "CDLAMERDE, OSKOUR",
-                    "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-            ),
-            Plan(
-                    1,
-                    "Coucou",
-                    "les loulou",
-                    R.drawable.nier_automata_banner,
-                    User(
-                            1,
-                            "2B",
-                            R.drawable.qmjbo59wwvhy,
-                            "mail@mail.mail",
-                            "pb_ZÈ)EGV_ZEPSDGBCÈYERGVÀB_'PZEUIGHFC)_UZE"),
-                    12,
-                    4,
-                    "CDLAMERDE, OSKOUR",
-                    "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-            ),
-            Plan(
-                    1,
-                    "Coucou",
-                    "les loulou",
-                    R.drawable.nier_automata_banner,
-                    User(
-                            1,
-                            "2B",
-                            R.drawable.qmjbo59wwvhy,
-                            "mail@mail.mail",
-                            "pb_ZÈ)EGV_ZEPSDGBCÈYERGVÀB_'PZEUIGHFC)_UZE"),
-                    12,
-                    4,
-                    "CDLAMERDE, OSKOUR",
-                    "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-            )))
+fun Home(navController: NavHostController) {
 
+    var plans by remember { mutableStateOf(mutableListOf<Plan>()) }
+    val db = Firebase.firestore
+
+    //get all plans and their authors
+    db.collection("plans")
+        .get()
+        .addOnSuccessListener { result ->
+            plans.clear()
+            for (document in result) {
+                var plan: Plan? = document.toObject()
+                if (plan != null) {
+                    plan.id = document.id
+
+                    db.collection("users")
+                        .document(plan.authorId)
+                        .get()
+                        .addOnSuccessListener { docUser ->
+                            var user: User? = docUser.toObject()
+                            if(user != null){
+                                plan.author = user
+                            }
+                        }
+                    plans.add(plan)
+                }
+            }
+        }
 
     var searchValue by remember { mutableStateOf("") }
 
@@ -211,7 +144,7 @@ fun Home(navController: NavHostController, plans: MutableList<Plan>) {
 
                         val cellSize = 160.dp
                         LazyVerticalGrid(
-                                cells = GridCells.Fixed(2)
+                                columns = GridCells.Fixed(2)
                         ) {
                             items(plans.size) { index ->
                                 Card(shape = RoundedCornerShape(10.dp),
@@ -227,9 +160,6 @@ fun Home(navController: NavHostController, plans: MutableList<Plan>) {
                         }
                     }
                 }
-
-
-
 
                 Row(modifier = Modifier
                         .fillMaxSize(),
@@ -253,4 +183,5 @@ fun CategoryButton(navController: NavHostController, searchTerm: String,
                 Modifier.fillMaxSize(0.8f),
                 tint = MediumBlue)
     }
+
 }
