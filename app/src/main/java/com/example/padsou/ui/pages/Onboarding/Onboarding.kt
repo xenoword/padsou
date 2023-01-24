@@ -1,5 +1,6 @@
 package com.example.padsou.ui.pages.Onboarding
 
+import android.annotation.SuppressLint
 import android.graphics.Color
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -7,7 +8,7 @@ import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -28,13 +29,45 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.HorizontalPagerIndicator
 import com.google.accompanist.pager.rememberPagerState
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.firestore.ktx.toObject
+import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.tasks.await
 import kotlin.math.roundToInt
 
+@SuppressLint("UnrememberedMutableState")
 @OptIn(ExperimentalPagerApi::class)
 @Composable
 fun Onboarding(navController: NavHostController)
 {
     val pagerState = rememberPagerState()
+
+    val plans = mutableStateListOf<Plan>()
+
+    val db = Firebase.firestore
+
+    //get all plans and their authors
+    db.collection("plans")
+        .limit(12)
+        .get()
+        .addOnSuccessListener { result ->
+            plans.clear()
+            for (document in result) {
+                val plan: Plan = document.toObject()
+                plan.id = document.id
+
+                db.collection("users")
+                    .document(plan.authorId)
+                    .get()
+                    .addOnSuccessListener { docUser ->
+                        val user: User? = docUser.toObject()
+                        if(user != null){
+                            plan.author = user
+                        }
+                    }
+                plans.add(plan)
+            }
+        }
 
     Column(
         Modifier
@@ -72,103 +105,65 @@ fun Onboarding(navController: NavHostController)
                     state = pagerState
                 )
                 {
-                    Row(Modifier,
-                        Arrangement.Center,
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Column(
-                            Modifier
-                                .clip(shape = RoundedCornerShape(30.dp))
-                                .background(White)
-                                .padding(10.dp)
+                    if (plans.size != 0) {
+                        Row(
+                            Modifier,
+                            Arrangement.Center,
+                            verticalAlignment = Alignment.CenterVertically
                         ) {
-                            Row {
-                                Column(
-                                    Modifier
-                                        .padding(10.dp, 10.dp, 5.dp, 5.dp)
-                                ) {
-                                    PlanPreview(
-                                        plan = Plan(
-                                            1,
-                                            "Coucou",
-                                            "les loulou",
-                                            R.drawable.nier_automata_banner,
-                                            User(
-                                                1,
-                                                "2B",
-                                                R.drawable.qmjbo59wwvhy,
-                                                "mail@mail.mail",
-                                                "pb_ZÈ)EGV_ZEPSDGBCÈYERGVÀB_'PZEUIGHFC)_UZE"),
-                                            12,
-                                            4,
-                                            "CDLAMERDE, OSKOUR",
-                                            "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-                                        ),
-                                        navController = navController,
-                                        height = 120.dp,
-                                        width = 120.dp)
+                            Column(
+                                Modifier
+                                    .clip(shape = RoundedCornerShape(30.dp))
+                                    .background(White)
+                                    .padding(10.dp)
+                            ) {
+                                Row {
+                                    Column(
+                                        Modifier
+                                            .padding(10.dp, 10.dp, 5.dp, 5.dp)
+                                    ) {
+                                        PlanPreview(
+                                            plan = plans[0],
+                                            navController = navController,
+                                            height = 120.dp,
+                                            width = 120.dp
+                                        )
+                                    }
+                                    Column(
+                                        Modifier
+                                            .padding(5.dp, 10.dp, 10.dp, 5.dp)
+                                    ) {
+                                        PlanPreview(
+                                            plan = plans[0],
+                                            navController = navController,
+                                            height = 120.dp,
+                                            width = 120.dp
+                                        )
+                                    }
                                 }
-                                Column(
-                                    Modifier
-                                        .padding(5.dp, 10.dp, 10.dp, 5.dp)
-                                ) {
-                                    PlanPreview(
-                                        plan = Plan(
-                                            1,
-                                            "Coucou",
-                                            "les loulou",
-                                            R.drawable.nier_automata_banner,
-                                            User(1, "2B", R.drawable.qmjbo59wwvhy, "mail@mail.mail", "pb_ZÈ)EGV_ZEPSDGBCÈYERGVÀB_'PZEUIGHFC)_UZE"),
-                                            12,
-                                            4,
-                                            "CDLAMERDE, OSKOUR",
-                                            "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-                                        ),
-                                        navController = navController,
-                                        height = 120.dp,
-                                        width = 120.dp)
-                                }
-                            }
-                            Row {
-                                Column(
-                                    Modifier
-                                        .padding(10.dp, 10.dp, 5.dp, 5.dp)
-                                ) {
-                                    PlanPreview(
-                                        plan = Plan(
-                                            1,
-                                            "Coucou",
-                                            "les loulou",
-                                            R.drawable.nier_automata_banner,
-                                            User(1, "2B", R.drawable.qmjbo59wwvhy, "mail@mail.mail", "pb_ZÈ)EGV_ZEPSDGBCÈYERGVÀB_'PZEUIGHFC)_UZE"),
-                                            12,
-                                            4,
-                                            "CDLAMERDE, OSKOUR",
-                                            "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-                                        ),
-                                        navController = navController,
-                                        height = 120.dp,
-                                        width = 120.dp)
-                                }
-                                Column(
-                                    Modifier
-                                        .padding(5.dp, 10.dp, 10.dp, 5.dp)
-                                ) {
-                                    PlanPreview(
-                                        plan = Plan(
-                                            1,
-                                            "Coucou les loulou",
-                                            "il fait des trucs un peu malsain",
-                                            R.drawable.nier_automata_banner,
-                                            User(1, "2B", R.drawable.qmjbo59wwvhy, "mail@mail.mail", "pb_ZÈ)EGV_ZEPSDGBCÈYERGVÀB_'PZEUIGHFC)_UZE"),
-                                            12,
-                                            4,
-                                            "CDLAMERDE, OSKOUR",
-                                            "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-                                        ),
-                                        navController = navController,
-                                        height = 120.dp,
-                                        width = 120.dp)
+                                Row {
+                                    Column(
+                                        Modifier
+                                            .padding(10.dp, 10.dp, 5.dp, 5.dp)
+                                    ) {
+                                        PlanPreview(
+                                            plan = plans[0],
+                                            navController = navController,
+                                            height = 120.dp,
+                                            width = 120.dp
+                                        )
+                                    }
+                                    Column(
+                                        Modifier
+                                            .padding(5.dp, 10.dp, 10.dp, 5.dp)
+                                    ) {
+                                        PlanPreview(
+                                            plan = plans[0],
+                                            navController = navController,
+                                            height = 120.dp,
+                                            width = 120.dp
+                                        )
+                                    }
                                 }
                             }
                         }

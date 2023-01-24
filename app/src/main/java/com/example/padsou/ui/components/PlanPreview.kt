@@ -5,7 +5,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -18,9 +18,17 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
+import coil.compose.AsyncImage
 import com.example.padsou.models.Plan
+import com.example.padsou.models.User
 import com.example.padsou.ui.pages.PlanDetail.PlanDetail
 import com.example.padsou.ui.theme.Teal200
+import com.google.android.gms.tasks.Task
+import com.google.firebase.firestore.DocumentSnapshot
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.firestore.ktx.toObject
+import com.google.firebase.ktx.Firebase
+import java.util.logging.Logger.global
 
 @Composable
 fun PlanPreview(plan: Plan, navController: NavHostController, height: Dp, width: Dp){
@@ -38,8 +46,9 @@ fun PlanPreview(plan: Plan, navController: NavHostController, height: Dp, width:
                 .fillMaxHeight(0.7F)
                 .fillMaxWidth()){
             Row(Modifier.fillMaxSize()) {
-                Image(
-                    painter = painterResource(id = plan.image),
+
+                AsyncImage(
+                    model = plan.image,
                     contentDescription = "Plan image",
                     contentScale = ContentScale.Crop,
                     modifier = Modifier
@@ -49,8 +58,8 @@ fun PlanPreview(plan: Plan, navController: NavHostController, height: Dp, width:
                 )
             }
             Row(Modifier.fillMaxSize(), Arrangement.Center, Alignment.Bottom) {
-                Image(
-                    painter = painterResource(id = plan.author.profilePicture),
+                AsyncImage(
+                    model = plan.author.profilePicture,
                     contentDescription = "Author profile picture",
                     contentScale = ContentScale.Crop,
                     modifier = Modifier
@@ -72,4 +81,5 @@ fun PlanPreview(plan: Plan, navController: NavHostController, height: Dp, width:
             Text(text = plan.subTitle, fontSize = 8.sp, fontWeight = FontWeight(500))
         }
     }
+
 }
