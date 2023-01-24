@@ -20,7 +20,7 @@ fun NavGraph() {
     val navController = rememberNavController()
     NavHost(
             navController = navController,
-            startDestination = "Home")
+            startDestination = "Onboarding")
     {
         composable(route = "Onboarding") { Onboarding(navController) }
         composable(route = "Login") { Login(navController) }
