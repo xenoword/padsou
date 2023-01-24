@@ -24,10 +24,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.padsou.ui.components.*
-import com.example.padsou.ui.theme.LightGray
-import com.example.padsou.ui.theme.MediumBlue
-import com.example.padsou.ui.theme.White
-import com.example.padsou.ui.theme.WhiteTransparent
+import com.example.padsou.ui.theme.*
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.HorizontalPagerIndicator
@@ -120,7 +117,7 @@ fun AddPlan(navController: NavHostController) {
                                                 }
                                         ) {
                                             Text("SUIVANT", fontWeight = FontWeight.Bold, fontSize = 16.sp, fontStyle = FontStyle.Normal,
-                                                    lineHeight = 21.sp, textAlign = TextAlign.Center, color = Color.White)
+                                                fontFamily = Typography.h1.fontFamily, lineHeight = 21.sp, textAlign = TextAlign.Center, color = Color.White)
                                         }
 
                                         Divider(thickness = 60.dp, color = Color.Transparent)
