@@ -1,5 +1,6 @@
 package com.example.padsou.ui.pages.Onboarding
 
+import android.annotation.SuppressLint
 import android.graphics.Color
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -31,15 +32,17 @@ import com.google.accompanist.pager.rememberPagerState
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.tasks.await
 import kotlin.math.roundToInt
 
+@SuppressLint("UnrememberedMutableState")
 @OptIn(ExperimentalPagerApi::class)
 @Composable
 fun Onboarding(navController: NavHostController)
 {
     val pagerState = rememberPagerState()
 
-    var plans by remember { mutableStateOf(mutableListOf<Plan>()) }
+    val plans = mutableStateListOf<Plan>()
 
     val db = Firebase.firestore
 
@@ -48,22 +51,21 @@ fun Onboarding(navController: NavHostController)
         .limit(12)
         .get()
         .addOnSuccessListener { result ->
+            plans.clear()
             for (document in result) {
-                var plan: Plan? = document.toObject()
-                if (plan != null) {
-                    plan.id = document.id
+                val plan: Plan = document.toObject()
+                plan.id = document.id
 
-                    db.collection("users")
-                        .document(plan.authorId)
-                        .get()
-                        .addOnSuccessListener { document ->
-                            var user: User? = document.toObject()
-                            if(user != null){
-                                plan.author = user
-                            }
+                db.collection("users")
+                    .document(plan.authorId)
+                    .get()
+                    .addOnSuccessListener { docUser ->
+                        val user: User? = docUser.toObject()
+                        if(user != null){
+                            plan.author = user
                         }
-                    plans.add(plan)
-                }
+                    }
+                plans.add(plan)
             }
         }
 
@@ -103,58 +105,65 @@ fun Onboarding(navController: NavHostController)
                     state = pagerState
                 )
                 {
-                    Row(Modifier,
-                        Arrangement.Center,
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Column(
-                            Modifier
-                                .clip(shape = RoundedCornerShape(30.dp))
-                                .background(White)
-                                .padding(10.dp)
+                    if (plans.size != 0) {
+                        Row(
+                            Modifier,
+                            Arrangement.Center,
+                            verticalAlignment = Alignment.CenterVertically
                         ) {
-                            Row {
-                                Column(
-                                    Modifier
-                                        .padding(10.dp, 10.dp, 5.dp, 5.dp)
-                                ) {
-                                    PlanPreview(
-                                        plan = plans[0],
-                                        navController = navController,
-                                        height = 120.dp,
-                                        width = 120.dp)
+                            Column(
+                                Modifier
+                                    .clip(shape = RoundedCornerShape(30.dp))
+                                    .background(White)
+                                    .padding(10.dp)
+                            ) {
+                                Row {
+                                    Column(
+                                        Modifier
+                                            .padding(10.dp, 10.dp, 5.dp, 5.dp)
+                                    ) {
+                                        PlanPreview(
+                                            plan = plans[0],
+                                            navController = navController,
+                                            height = 120.dp,
+                                            width = 120.dp
+                                        )
+                                    }
+                                    Column(
+                                        Modifier
+                                            .padding(5.dp, 10.dp, 10.dp, 5.dp)
+                                    ) {
+                                        PlanPreview(
+                                            plan = plans[0],
+                                            navController = navController,
+                                            height = 120.dp,
+                                            width = 120.dp
+                                        )
+                                    }
                                 }
-                                Column(
-                                    Modifier
-                                        .padding(5.dp, 10.dp, 10.dp, 5.dp)
-                                ) {
-                                    PlanPreview(
-                                        plan = plans[0],
-                                        navController = navController,
-                                        height = 120.dp,
-                                        width = 120.dp)
-                                }
-                            }
-                            Row {
-                                Column(
-                                    Modifier
-                                        .padding(10.dp, 10.dp, 5.dp, 5.dp)
-                                ) {
-                                    PlanPreview(
-                                        plan = plans[0],
-                                        navController = navController,
-                                        height = 120.dp,
-                                        width = 120.dp)
-                                }
-                                Column(
-                                    Modifier
-                                        .padding(5.dp, 10.dp, 10.dp, 5.dp)
-                                ) {
-                                    PlanPreview(
-                                        plan = plans[0],
-                                        navController = navController,
-                                        height = 120.dp,
-                                        width = 120.dp)
+                                Row {
+                                    Column(
+                                        Modifier
+                                            .padding(10.dp, 10.dp, 5.dp, 5.dp)
+                                    ) {
+                                        PlanPreview(
+                                            plan = plans[0],
+                                            navController = navController,
+                                            height = 120.dp,
+                                            width = 120.dp
+                                        )
+                                    }
+                                    Column(
+                                        Modifier
+                                            .padding(5.dp, 10.dp, 10.dp, 5.dp)
+                                    ) {
+                                        PlanPreview(
+                                            plan = plans[0],
+                                            navController = navController,
+                                            height = 120.dp,
+                                            width = 120.dp
+                                        )
+                                    }
                                 }
                             }
                         }

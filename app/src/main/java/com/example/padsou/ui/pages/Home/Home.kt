@@ -40,13 +40,13 @@ import com.google.firebase.ktx.Firebase
 fun Home(navController: NavHostController) {
 
     var plans by remember { mutableStateOf(mutableListOf<Plan>()) }
-
     val db = Firebase.firestore
 
     //get all plans and their authors
     db.collection("plans")
         .get()
         .addOnSuccessListener { result ->
+            plans.clear()
             for (document in result) {
                 var plan: Plan? = document.toObject()
                 if (plan != null) {
@@ -55,8 +55,8 @@ fun Home(navController: NavHostController) {
                     db.collection("users")
                         .document(plan.authorId)
                         .get()
-                        .addOnSuccessListener { document ->
-                            var user: User? = document.toObject()
+                        .addOnSuccessListener { docUser ->
+                            var user: User? = docUser.toObject()
                             if(user != null){
                                 plan.author = user
                             }
