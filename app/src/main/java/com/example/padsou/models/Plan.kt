@@ -5,9 +5,10 @@ data class Plan(
     val title: String = "",
     val subTitle: String = "",
     val image: String ="",
-    val author: String = "",
+    val authorId: String = "",
     val nbTest: Int = 0,
     val note: Int = 0,
     val description: String = "",
-    val link: String = ""
+    val link: String = "",
+    var author: User = User()
 )

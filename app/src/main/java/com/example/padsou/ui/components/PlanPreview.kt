@@ -33,22 +33,11 @@ import java.util.logging.Logger.global
 
 @Composable
 fun PlanPreview(plan: Plan, navController: NavHostController, height: Dp, width: Dp){
-    val db = Firebase.firestore
-    var author by remember { mutableStateOf(User()) }
-
-    db.collection("users")
-        .document(plan.author)
-        .get()
-        .addOnSuccessListener { document ->
-            document.toObject<User>()?.let { it ->
-                author = it
-                author.id = plan.author
-            }
-        }
 
     Column(Modifier.height(height).width(width)) {
-        Box(Modifier.fillMaxHeight(0.66F).fillMaxWidth()){
+        Box(Modifier.fillMaxHeight(0.7F).fillMaxWidth()){
             Row(Modifier.fillMaxSize()) {
+
                 AsyncImage(
                     model = plan.image,
                     contentDescription = "Plan image",
@@ -61,11 +50,12 @@ fun PlanPreview(plan: Plan, navController: NavHostController, height: Dp, width:
             }
             Row(Modifier.fillMaxSize(), Arrangement.Center, Alignment.Bottom) {
                 AsyncImage(
-                    model = author.profilePicture,
+                    model = plan.author.profilePicture,
                     contentDescription = "Author profile picture",
                     contentScale = ContentScale.Crop,
                     modifier = Modifier
-                        .fillMaxSize(0.3F)
+                        .fillMaxWidth(0.3F*0.7F)
+                        .fillMaxHeight(0.3F)
                         .border(
                             BorderStroke(2.dp, Color.White),
                             CircleShape
