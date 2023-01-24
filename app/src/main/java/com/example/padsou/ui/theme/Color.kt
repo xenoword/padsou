@@ -18,3 +18,8 @@ val RegularBlue = Color(0xFFEDF2FB)
 val PrimaryOrange = Color(0xFFFFB320)
 val Pink = Color(0xFFF9709C)
 val LightGray = Color(0xFFF0F0F0)
+
+val BackgroundLightGray = Color(0xFFF7F7F7)
+val YellowStar = Color(0xFFFFC107)
+val GrayStar = Color(0xFFE3E3E3)
+val LightGrayText = Color(0xFFA6A6A6)
