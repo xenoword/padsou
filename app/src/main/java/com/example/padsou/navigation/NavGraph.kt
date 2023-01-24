@@ -25,7 +25,7 @@ fun NavGraph (){
         composable(route = "Register"){Register(navController)}
         composable(route = "Detail/{planId}"){
                 navBackStackEntry ->
-            val planId = navBackStackEntry.arguments?.getInt("planId");
+            val planId = navBackStackEntry.arguments?.getString("planId");
             planId?.let {
                 PlanDetail(it)
             }

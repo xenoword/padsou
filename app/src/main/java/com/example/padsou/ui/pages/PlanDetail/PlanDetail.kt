@@ -35,8 +35,8 @@ import com.example.padsou.ui.components.Title
 import com.example.padsou.ui.theme.*
 
 @Composable
-fun PlanDetail(planId: Int) {
-    // val plan = plans[planId];
+fun PlanDetail(planId: String) {
+
     val plan = Plan(
         1,
         "Coucou les loulou",
