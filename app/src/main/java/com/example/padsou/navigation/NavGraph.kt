@@ -24,7 +24,7 @@ fun NavGraph() {
     {
         composable(route = "Onboarding") { Onboarding(navController) }
         composable(route = "Login") { Login(navController) }
-        composable(route = "Home") { Home(navController, mutableListOf<Plan>()) }
+        composable(route = "Home") { Home(navController) }
         composable(route = "Register") { Register(navController) }
         composable(route = "AddPlan") { AddPlan(navController) }
         composable("Search/{searchTerm}",
