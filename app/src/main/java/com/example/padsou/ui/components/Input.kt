@@ -48,7 +48,7 @@ fun Input (name: String, onValueChange: (String) -> Unit, placeholder: String,
                                 .fillMaxWidth(),
                         value = name,
                         onValueChange = onValueChange,
-                        placeholder = { Text(text = placeholder) },
+                        placeholder = { Text(text = placeholder, color = Color(0xFFA6A6A6)) },
                 )
         }
 }

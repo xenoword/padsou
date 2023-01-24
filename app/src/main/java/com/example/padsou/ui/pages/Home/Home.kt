@@ -20,6 +20,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -146,8 +147,7 @@ fun Home(navController: NavHostController, plans: MutableList<Plan>) {
                         color = Color.White,
                         fontSize = 20.sp)
 
-                Divider(thickness = 40
-                        .dp, color = Color.Transparent)
+                Divider(thickness = 40.dp, color = Color.Transparent)
                 SearchBar(name = searchValue, onValueChange = { searchValue = it },
                         placeholder = "Cherche un bon plan")
             }
@@ -158,7 +158,7 @@ fun Home(navController: NavHostController, plans: MutableList<Plan>) {
                 Column(horizontalAlignment = Alignment.CenterHorizontally,
                         modifier = Modifier
                                 .fillMaxSize()
-                                .padding(horizontal = 0.dp, vertical = 15.dp)
+                                .padding(horizontal = 0.dp, vertical = 10.dp)
                         //.verticalScroll(rememberScrollState())
                 ) {
 
@@ -187,19 +187,21 @@ fun Home(navController: NavHostController, plans: MutableList<Plan>) {
                     }
 
                     Column(modifier = Modifier.fillMaxWidth(0.85f).padding(bottom = 70.dp)) {
-                        Divider(thickness = 20.dp, color = Color.Transparent)
-                        Row(modifier = Modifier.fillMaxWidth(),
-                                horizontalArrangement = Arrangement.SpaceBetween) {
+                        Divider(thickness = 15.dp, color = Color.Transparent)
+                        Row(modifier = Modifier.fillMaxWidth().padding(bottom = 5.dp),
+                                horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.Bottom) {
 
-                            Title(text = "LES PLANS DU MOMENT", color = Color.Black, 18.sp)
+                            Title(text = "LES PLANS DU MOMENT", color = Color.Black, 14.sp)
 
                             ClickableText(
-                                    //modifier = Modifier.align(Alignment.End),
+                                    modifier = Modifier.padding(horizontal = 10.dp),
                                     text = buildAnnotatedString {
                                         withStyle(
                                                 style = SpanStyle(
                                                         color = Color(0xFFF44336),
-                                                        fontSize = 18.sp),
+                                                        fontSize = 14.sp,
+                                                fontWeight = FontWeight.Bold),
                                         ) {
                                             append("Voir tout")
                                         }
