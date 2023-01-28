@@ -31,7 +31,7 @@ fun NavBar(navController: NavHostController) {
             IconNavButton(navController = navController,
                     routeName = "AddPlan", Icons.Rounded.AddCircle)
             IconNavButton(navController = navController,
-                    routeName = "Login", Icons.Rounded.AccountCircle)
+                    routeName = "Profil", Icons.Rounded.AccountCircle)
         }
     }
 }
