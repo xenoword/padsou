@@ -12,6 +12,7 @@ import com.example.padsou.ui.pages.Auth.Login
 import com.example.padsou.ui.pages.Auth.Register
 import com.example.padsou.ui.pages.Home.Home
 import com.example.padsou.ui.pages.PlanDetail.PlanDetail
+import com.example.padsou.ui.pages.Profil.Profil
 import com.example.padsou.ui.pages.Search.Search
 
 
@@ -39,6 +40,6 @@ fun NavGraph() {
                 PlanDetail(it)
             }
         }
-//        composable(route = "Profil"){Profil(navController)}
+        composable(route = "Profil"){Profil(navController)}
     }
 }
