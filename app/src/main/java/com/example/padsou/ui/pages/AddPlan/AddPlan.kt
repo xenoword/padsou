@@ -1,14 +1,13 @@
 package com.example.padsou.ui.pages.AddPlan
 
 import android.graphics.Paint.Align
-import androidx.compose.foundation.background
+import android.util.Log
+import androidx.compose.foundation.*
 import androidx.compose.foundation.gestures.FlingBehavior
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Add
@@ -20,25 +19,25 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.padsou.ui.components.*
 import com.example.padsou.ui.theme.*
-import com.google.accompanist.pager.ExperimentalPagerApi
-import com.google.accompanist.pager.HorizontalPager
-import com.google.accompanist.pager.HorizontalPagerIndicator
-import com.google.accompanist.pager.rememberPagerState
+import com.google.accompanist.pager.*
+import dev.chrisbanes.snapper.ExperimentalSnapperApi
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalPagerApi::class)
+@OptIn(ExperimentalPagerApi::class, ExperimentalSnapperApi::class)
 @Composable
 fun AddPlan(navController: NavHostController) {
     var titleValue by remember { mutableStateOf("") }
     var descriptionValue by remember { mutableStateOf("") }
     var linkValue by remember { mutableStateOf("") }
-    val pagerState = rememberPagerState(0)
+    var pagerState = rememberPagerState(0)
+
     val scope = MainScope()
 
     androidx.compose.material.Surface(
@@ -62,7 +61,7 @@ fun AddPlan(navController: NavHostController) {
                 Row(modifier = Modifier
                         .fillMaxSize()
                         .padding(horizontal = 30.dp, vertical = 15.dp)
-                        .verticalScroll(rememberScrollState())) {
+                ) {
 
                     Column(modifier = Modifier.fillMaxWidth()) {
                         HorizontalPagerIndicator(
@@ -75,16 +74,18 @@ fun AddPlan(navController: NavHostController) {
                                 modifier = Modifier
                                         .align(Alignment.CenterHorizontally)
                                         .fillMaxHeight(0.05F)
-                                        .padding(bottom = 30.dp)
+                                        .padding(bottom = 15.dp)
                         )
+
                         HorizontalPager(
-                                count = 2,
-                                state = pagerState
+                            count = 2,
+                            state = pagerState,
+                            userScrollEnabled = false,
                         ) { page: Int ->
                             when (page) {
                                 // PAGE 1 ---------------------------------
                                 0 -> {
-                                    Column(modifier = Modifier.fillMaxSize()) {
+                                    Column(modifier = Modifier.fillMaxSize().verticalScroll(rememberScrollState())) {
                                         Title(text = "TITRE", color = Color.Black, size = 18.sp)
                                         Divider(thickness = 5.dp, color = Color.Transparent)
                                         Input(name = titleValue, onValueChange = { titleValue = it },
@@ -95,7 +96,7 @@ fun AddPlan(navController: NavHostController) {
                                         Divider(thickness = 5.dp, color = Color.Transparent)
                                         Input(name = descriptionValue, onValueChange = { descriptionValue = it },
                                                 placeholder = "Ne soit pas trop bavard, on s’en fout, va à l’essentiel",
-                                                lineCount = 6)
+                                                lineCount = 5)
 
                                         Divider(thickness = 20.dp, color = Color.Transparent)
                                         Title(text = "LIEN", color = Color.Black, size = 18.sp)
@@ -146,7 +147,7 @@ fun AddPlan(navController: NavHostController) {
                                         //Divider(thickness = 100.dp, color = Color.Transparent)
                                         Row(modifier = Modifier
                                                 .fillMaxSize()
-                                                .padding(top= 100.dp, bottom = 60.dp),
+                                                .padding(bottom = 70.dp),
                                                 verticalAlignment = Alignment.Bottom) {
                                             NavigateButton(text = "AJOUTER CE BON PLAN",
                                                     backgroundcolor = MediumBlue,
