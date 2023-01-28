@@ -33,28 +33,11 @@ class MainActivity : ComponentActivity() {
                 // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
-                    //color = MaterialTheme.colors.background
                     color = LightGray
                 ) {
                     NavGraph()
                 }
             }
         }
-    }
-}
-
-@Composable
-fun Greeting() {
-    var text by remember { mutableStateOf("") }
-
-    Input(name = text, onValueChange = { newText ->
-        text = newText }, placeholder = "zebi rempli moi")
-}
-
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-    PadsouTheme {
-        Greeting()
     }
 }
