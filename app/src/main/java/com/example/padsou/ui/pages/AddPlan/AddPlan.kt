@@ -12,7 +12,6 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import android.graphics.Paint.Align
-import android.util.Log
 import androidx.compose.foundation.*
 import androidx.compose.foundation.gestures.FlingBehavior
 import androidx.compose.foundation.gestures.Orientation
@@ -127,7 +126,7 @@ fun AddPlan(navController: NavHostController) {
                         HorizontalPager(
                             count = 2,
                             state = pagerState,
-                            userScrollEnabled = false,
+                            //userScrollEnabled = false, TODO
                         ) { page: Int ->
                             when (page) {
                                 // PAGE 1 ---------------------------------
