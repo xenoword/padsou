@@ -25,7 +25,7 @@ import com.example.padsou.ui.theme.MediumBlue
 
 @Composable
 fun IconNavButton(navController: NavHostController, routeName: String,
-                  iconImgVector: ImageVector, color: Color) {
+                  iconImgVector: ImageVector) {
     IconButton(
             onClick = { navController.navigate(routeName) },
             modifier = Modifier
@@ -33,7 +33,7 @@ fun IconNavButton(navController: NavHostController, routeName: String,
                     .background(LightGray, RoundedCornerShape(5.dp))) {
         Icon(iconImgVector, null,
                 Modifier.fillMaxSize(0.8f),
-                tint = color)
+                tint = MediumBlue)
     }
 }
 

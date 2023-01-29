@@ -19,7 +19,6 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.*
-import com.example.padsou.ui.theme.Typography
 
 @Composable
 fun ExternalLinkButton(text: String, backgroundcolor: Color, link: String){
@@ -37,6 +36,6 @@ fun ExternalLinkButton(text: String, backgroundcolor: Color, link: String){
         }
     ) {
         Text(text, fontWeight = FontWeight.Bold, fontSize = 16.sp, fontStyle = FontStyle.Normal,
-            fontFamily = Typography.h1.fontFamily, lineHeight = 21.sp, textAlign = TextAlign.Center, color = Color.White)
+            lineHeight = 21.sp, textAlign = TextAlign.Center, color = Color.White)
     }
 }

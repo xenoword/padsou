@@ -23,5 +23,3 @@ val BackgroundLightGray = Color(0xFFF7F7F7)
 val YellowStar = Color(0xFFFFC107)
 val GrayStar = Color(0xFFE3E3E3)
 val LightGrayText = Color(0xFFA6A6A6)
-val LightGrayIcon = Color(0xFFBCC0CC)
-

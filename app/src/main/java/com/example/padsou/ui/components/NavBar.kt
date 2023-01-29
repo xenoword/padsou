@@ -14,21 +14,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import com.example.padsou.ui.theme.LightGrayIcon
-import com.example.padsou.ui.theme.MediumBlue
 
 @Composable
 fun NavBar(navController: NavHostController) {
-
-    fun getIconColor(route :String) : Color
-    {
-        if (navController.currentBackStackEntry?.destination?.route === route)
-        {
-            return MediumBlue;
-        }
-        return LightGrayIcon;
-    }
-
     Card(elevation = 16.dp, shape = RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp)) {
         Row(verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceEvenly,
@@ -39,11 +27,11 @@ fun NavBar(navController: NavHostController) {
                         .padding(horizontal = 60.dp, vertical = 15.dp)
         ) {
             IconNavButton(navController = navController,
-                    routeName = "Home", Icons.Rounded.Home, color = getIconColor("Home"))
+                    routeName = "Home", Icons.Rounded.Home)
             IconNavButton(navController = navController,
-                    routeName = "AddPlan", Icons.Rounded.AddCircle, color = getIconColor("AddPlan"))
+                    routeName = "AddPlan", Icons.Rounded.AddCircle)
             IconNavButton(navController = navController,
-                    routeName = "Profil", Icons.Rounded.AccountCircle, color = getIconColor("Profil"))
+                    routeName = "Login", Icons.Rounded.AccountCircle)
         }
     }
 }
