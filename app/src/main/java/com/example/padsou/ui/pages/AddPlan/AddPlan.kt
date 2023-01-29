@@ -11,10 +11,14 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import android.graphics.Paint.Align
+import android.util.Log
+import androidx.compose.foundation.*
+import androidx.compose.foundation.gestures.FlingBehavior
+import androidx.compose.foundation.gestures.Orientation
+import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Add
@@ -27,6 +31,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
@@ -40,11 +45,13 @@ import com.google.accompanist.pager.rememberPagerState
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
+import com.google.accompanist.pager.*
+import dev.chrisbanes.snapper.ExperimentalSnapperApi
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import java.io.ByteArrayOutputStream
 
-@OptIn(ExperimentalPagerApi::class)
+@OptIn(ExperimentalPagerApi::class, ExperimentalSnapperApi::class)
 @Composable
 fun AddPlan(navController: NavHostController) {
     // PLAN DATA
@@ -69,7 +76,8 @@ fun AddPlan(navController: NavHostController) {
     var titleValue by remember { mutableStateOf("") }
     var descriptionValue by remember { mutableStateOf("") }
     var linkValue by remember { mutableStateOf("") }
-    val pagerState = rememberPagerState(0)
+    var pagerState = rememberPagerState(0)
+
     val scope = MainScope()
 
     androidx.compose.material.Surface(
@@ -100,30 +108,31 @@ fun AddPlan(navController: NavHostController) {
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(horizontal = 30.dp, vertical = 15.dp)
-                        .verticalScroll(rememberScrollState())
                 ) {
 
                     Column(modifier = Modifier.fillMaxWidth()) {
                         HorizontalPagerIndicator(
-                            pagerState = pagerState,
-                            activeColor = MediumBlue,
-                            inactiveColor = Color.LightGray,
-                            indicatorWidth = 50.dp,
-                            indicatorHeight = 5.dp,
-                            spacing = 10.dp,
-                            modifier = Modifier
-                                .align(Alignment.CenterHorizontally)
-                                .fillMaxHeight(0.05F)
-                                .padding(bottom = 30.dp)
+                                pagerState = pagerState,
+                                activeColor = MediumBlue,
+                                inactiveColor = Color.LightGray,
+                                indicatorWidth = 50.dp,
+                                indicatorHeight = 5.dp,
+                                spacing = 10.dp,
+                                modifier = Modifier
+                                        .align(Alignment.CenterHorizontally)
+                                        .fillMaxHeight(0.05F)
+                                        .padding(bottom = 15.dp)
                         )
+
                         HorizontalPager(
                             count = 2,
-                            state = pagerState
+                            state = pagerState,
+                            userScrollEnabled = false,
                         ) { page: Int ->
                             when (page) {
                                 // PAGE 1 ---------------------------------
                                 0 -> {
-                                    Column(modifier = Modifier.fillMaxSize()) {
+                                    Column(modifier = Modifier.fillMaxSize().verticalScroll(rememberScrollState())) {
                                         Title(text = "TITRE", color = Color.Black, size = 18.sp)
                                         Divider(thickness = 5.dp, color = Color.Transparent)
                                         Input(
@@ -138,12 +147,9 @@ fun AddPlan(navController: NavHostController) {
                                             size = 18.sp
                                         )
                                         Divider(thickness = 5.dp, color = Color.Transparent)
-                                        Input(
-                                            name = descriptionValue,
-                                            onValueChange = { descriptionValue = it },
-                                            placeholder = "Ne soit pas trop bavard, on s’en fout, va à l’essentiel",
-                                            lineCount = 6
-                                        )
+                                        Input(name = descriptionValue, onValueChange = { descriptionValue = it },
+                                                placeholder = "Ne soit pas trop bavard, on s’en fout, va à l’essentiel",
+                                                lineCount = 5)
 
                                         Divider(thickness = 20.dp, color = Color.Transparent)
                                         Title(text = "LIEN", color = Color.Black, size = 18.sp)
