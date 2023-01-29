@@ -1,18 +1,16 @@
 package com.example.padsou.ui.pages.AddPlan
 
+import android.content.ContentValues.TAG
 import android.graphics.Bitmap
 import android.graphics.ImageDecoder
-import android.graphics.Paint.Align
 import android.net.Uri
 import android.os.Build
 import android.provider.MediaStore
+import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.gestures.FlingBehavior
-import androidx.compose.foundation.gestures.Orientation
-import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -20,7 +18,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Add
-import androidx.compose.material.icons.rounded.AddCircle
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -40,6 +37,7 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.HorizontalPagerIndicator
 import com.google.accompanist.pager.rememberPagerState
+import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import kotlinx.coroutines.MainScope
@@ -49,6 +47,8 @@ import java.io.ByteArrayOutputStream
 @OptIn(ExperimentalPagerApi::class)
 @Composable
 fun AddPlan(navController: NavHostController) {
+    // PLAN DATA
+    var currentPlan = Plan()
     // IMAGE SELECTION STUFF ---------------
     var imageUri by remember {
         mutableStateOf<Uri?>(null)
@@ -162,12 +162,17 @@ fun AddPlan(navController: NavHostController) {
                                             shape = RoundedCornerShape(20F),
                                             onClick = {
                                                 scope.launch {
+                                                    currentPlan = Plan(
+                                                        title = titleValue,
+                                                        description = descriptionValue,
+                                                        link = linkValue
+                                                    )
                                                     pagerState.scrollToPage(1)
                                                 }
                                             },
                                             //Actif seulement quand les 3 champs sont renseignés
                                             // TODO RETIRER LE PREMIER '!' EN VF
-                                            enabled = !(!titleValue.isNullOrBlank() &&
+                                            enabled = (!titleValue.isNullOrBlank() &&
                                                     !descriptionValue.isNullOrBlank() &&
                                                     !linkValue.isNullOrBlank())
                                         ) {
@@ -258,7 +263,8 @@ fun AddPlan(navController: NavHostController) {
                                                 onClick = {
                                                     scope.launch {
                                                         // TODO
-                                                        UploadPlan(null, bitmap.value!!)
+                                                        uploadPlan(currentPlan, bitmap.value!!)
+                                                        navController.navigate("Home")
                                                     }
                                                 },
                                                 //Actif seulement quand la photo est ajoutée
@@ -277,7 +283,6 @@ fun AddPlan(navController: NavHostController) {
                                                 )
                                             }
                                         }
-
                                     }
                                 }
                             }
@@ -297,7 +302,7 @@ fun AddPlan(navController: NavHostController) {
     }
 }
 
-private fun UploadPlan(plan: Plan?, imgBitmap: Bitmap) {
+private fun uploadPlan(plan: Plan, imgBitmap: Bitmap) {
     // Create a storage reference from our app
     val storageRef = Firebase.storage.reference
 
@@ -312,10 +317,30 @@ private fun UploadPlan(plan: Plan?, imgBitmap: Bitmap) {
     val data = baos.toByteArray()
 
     var uploadTask = imgRef.putBytes(data)
-    uploadTask.addOnFailureListener {
-        // Handle unsuccessful uploads
-    }.addOnSuccessListener { taskSnapshot ->
-        // taskSnapshot.metadata contains file metadata such as size, content-type, etc.
-        // ...
+
+    val urlTask = uploadTask.addOnFailureListener { ex ->
+        //TODO HANDLE FAILURES
+        throw ex
+    }.addOnSuccessListener { task ->
+        task.storage.downloadUrl.addOnSuccessListener {
+            val downloadUri = it.toString()
+            plan.image = downloadUri
+            plan.nbTest = 0
+            plan.note = 0
+            plan.subTitle = ""
+            insertPlanInDatabase(plan)
+        }.addOnFailureListener{ ex ->
+            //TODO HANDLE FAILURES
+            throw ex
+        }
     }
+}
+
+private fun insertPlanInDatabase(plan: Plan) {
+    val databaseRef = Firebase.firestore
+
+    databaseRef.collection("plans").document()
+        .set(plan.toFirebaseHashMap())
+        .addOnSuccessListener { Log.d(TAG, "Plan créé avec succès!")}
+        .addOnFailureListener { e -> Log.w(TAG, "Erreur lors de la création du plan !", e) }
 }
