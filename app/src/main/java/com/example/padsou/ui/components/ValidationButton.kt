@@ -16,9 +16,9 @@ import androidx.compose.ui.unit.*
 import com.example.padsou.ui.theme.Typography
 
 @Composable
-fun ValidationButton(text: String, enabled: Boolean = true, backgroundcolor: Color, onClick: () -> Unit){
+fun ValidationButton(text: String, enabled: Boolean = true, backgroundColor: Color, onClick: () -> Unit){
 
-    Button(colors = ButtonDefaults.buttonColors(backgroundColor = backgroundcolor),
+    Button(colors = ButtonDefaults.buttonColors(backgroundColor = backgroundColor),
         modifier = Modifier.fillMaxWidth().height(50.dp),
         enabled = enabled,
         shape = RoundedCornerShape(20F),

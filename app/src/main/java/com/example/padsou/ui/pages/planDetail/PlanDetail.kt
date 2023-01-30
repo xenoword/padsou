@@ -1,4 +1,4 @@
-package com.example.padsou.ui.pages.PlanDetail
+package com.example.padsou.ui.pages.planDetail
 
 import android.content.Intent
 import android.net.Uri
@@ -31,8 +31,6 @@ import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
-import kotlinx.coroutines.runBlocking
-import okhttp3.internal.wait
 
 @Composable
 fun PlanDetail(planId: String) {
@@ -45,9 +43,9 @@ fun PlanDetail(planId: String) {
             .get()
             .addOnSuccessListener { document ->
                 val tmp = document.toObject<Plan>()!!
-                tmp!!.id = planId
+                tmp.id = planId
 
-                var task = db.collection("users")
+                db.collection("users")
                     .document(tmp.authorId)
                     .get()
                     .addOnSuccessListener { docUser ->
@@ -57,7 +55,6 @@ fun PlanDetail(planId: String) {
                             plan = tmp
                         }
                     }
-                //while (!task.isComplete) { }
             }
     }
 
@@ -196,7 +193,6 @@ fun PlanDetail(planId: String) {
                     ExternalLinkButton(
                         text = "PROFITER DE L'OFFRE",
                         backgroundColor = MediumBlue,
-                        link = plan.link,
                         onClick = {
                             incrementNbTestCounter(plan.id)
                             ctx.startActivity(urlIntent)

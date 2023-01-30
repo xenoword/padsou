@@ -4,16 +4,13 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navArgument
-import com.example.padsou.models.Plan
-import com.example.padsou.ui.pages.AddPlan.AddPlan
-import com.example.padsou.ui.pages.Onboarding.Onboarding
-import com.example.padsou.ui.pages.Auth.Login
-import com.example.padsou.ui.pages.Auth.Register
-import com.example.padsou.ui.pages.Home.Home
-import com.example.padsou.ui.pages.PlanDetail.PlanDetail
-import com.example.padsou.ui.pages.Profil.Profil
-import com.example.padsou.ui.pages.Search.Search
+import com.example.padsou.ui.pages.addPlan.AddPlan
+import com.example.padsou.ui.pages.onboarding.Onboarding
+import com.example.padsou.ui.pages.auth.Login
+import com.example.padsou.ui.pages.auth.Register
+import com.example.padsou.ui.pages.home.Home
+import com.example.padsou.ui.pages.planDetail.PlanDetail
+import com.example.padsou.ui.pages.profil.Profil
 
 
 @Composable
@@ -28,11 +25,6 @@ fun NavGraph() {
         composable(route = "Home") { Home(navController) }
         composable(route = "Register") { Register(navController) }
         composable(route = "AddPlan") { AddPlan(navController) }
-        composable("Search/{searchTerm}",
-                arguments = listOf(navArgument("searchTerm") { defaultValue = "" })
-        ) { backStackEntry ->
-            Search(navController, backStackEntry.arguments?.getString("searchTerm"))
-        }
         composable(route = "Detail/{planId}"){
                 navBackStackEntry ->
             val planId = navBackStackEntry.arguments?.getString("planId")

@@ -1,10 +1,5 @@
 package com.example.padsou.models
 
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.firestore.ktx.toObject
-import com.google.firebase.ktx.Firebase
-
 data class Plan(
     var id: String = "",
     var title: String = "",
@@ -17,8 +12,7 @@ data class Plan(
     var link: String = "",
     var author: User = User()
 ){
-    public fun toFirebaseHashMap(): HashMap<String, Any> {
-
+    fun toFirebaseHashMap(): HashMap<String, Any> {
         return hashMapOf(
             "authorId" to authorId,
             "description" to description,

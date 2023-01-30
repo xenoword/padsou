@@ -1,6 +1,5 @@
-package com.example.padsou.ui.pages.Onboarding
+package com.example.padsou.ui.pages.onboarding
 
-import android.annotation.SuppressLint
 import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -34,14 +33,13 @@ import com.google.firebase.ktx.Firebase
 
 private lateinit var auth: FirebaseAuth
 
-@SuppressLint("UnrememberedMutableState")
 @OptIn(ExperimentalPagerApi::class)
 @Composable
 fun Onboarding(navController: NavHostController)
 {
     val pagerState = rememberPagerState()
 
-    var plans by remember { mutableStateOf(mutableListOf<Plan>()) }
+    val plans by remember { mutableStateOf(mutableListOf<Plan>()) }
 
     auth = Firebase.auth
 

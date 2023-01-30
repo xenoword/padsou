@@ -1,4 +1,4 @@
-package com.example.padsou.ui.pages.AddPlan
+package com.example.padsou.ui.pages.addPlan
 
 import android.content.ContentValues.TAG
 import android.content.Context
@@ -37,7 +37,6 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
-import dev.chrisbanes.snapper.ExperimentalSnapperApi
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import java.io.ByteArrayOutputStream
@@ -66,11 +65,11 @@ fun AddPlan(navController: NavHostController) {
     var titleValue by remember { mutableStateOf("") }
     var descriptionValue by remember { mutableStateOf("") }
     var linkValue by remember { mutableStateOf("") }
-    var pagerState = rememberPagerState(0)
+    val pagerState = rememberPagerState(0)
 
     val scope = MainScope()
 
-    androidx.compose.material.Surface(
+    Surface(
             modifier = Modifier.fillMaxSize(),
             color = MediumBlue) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
@@ -152,9 +151,9 @@ fun AddPlan(navController: NavHostController) {
                                                     }
                                                 },
                                             //Actif seulement quand les 3 champs sont renseignés
-                                            enabled = (!titleValue.isNullOrBlank() &&
-                                                    !descriptionValue.isNullOrBlank() &&
-                                                    !linkValue.isNullOrBlank())
+                                            enabled = (titleValue.isNotBlank() &&
+                                                    descriptionValue.isNotBlank() &&
+                                                    linkValue.isNotBlank())
                                         ) {
                                             Text("SUIVANT", fontWeight = FontWeight.Bold, fontSize = 16.sp, fontStyle = FontStyle.Normal,
                                                 fontFamily = Typography.h1.fontFamily, lineHeight = 21.sp, textAlign = TextAlign.Center, color = Color.White)
@@ -267,15 +266,13 @@ private fun uploadPlan(plan: Plan, imgBitmap: Bitmap, context: Context) {
     val randName = (0..999999999).random().toString()
     val imgRef = storageRef.child("$randName.jpg")
 
-    val imgImagesRef = storageRef.child("images/$randName.jpg")
-
     val baos = ByteArrayOutputStream()
     imgBitmap.compress(Bitmap.CompressFormat.JPEG, 25, baos)
     val data = baos.toByteArray()
 
-    var uploadTask = imgRef.putBytes(data)
+    val uploadTask = imgRef.putBytes(data)
 
-    val urlTask = uploadTask.addOnFailureListener { ex ->
+    uploadTask.addOnFailureListener { ex ->
         //TODO HANDLE FAILURES
         throw ex
     }.addOnSuccessListener { task ->

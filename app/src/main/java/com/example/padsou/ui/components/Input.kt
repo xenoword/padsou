@@ -1,26 +1,23 @@
 package com.example.padsou.ui.components
 
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import com.example.padsou.ui.theme.Purple200
-import com.example.padsou.ui.theme.Shapes
 
 @Composable
 fun Input (name: String, onValueChange: (String) -> Unit, placeholder: String,
            lineCount: Int = 1, kbType: KeyboardType = KeyboardType.Text)
 {
-        var isSingleLine: Boolean = false
+        var isSingleLine = false
         var kbTransformation: VisualTransformation = VisualTransformation.None
 
         if (kbType == KeyboardType.Password) {
