@@ -139,7 +139,7 @@ fun Home(navController: NavHostController) {
                                         ) {
                                             append("Voir tout")
                                         }
-                                    }, onClick = { navController.navigate("Search/") }
+                                    }, onClick = { /* TODO */ }
                             )
                         }
 
