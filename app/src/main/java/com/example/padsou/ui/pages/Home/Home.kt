@@ -153,7 +153,7 @@ fun Home(navController: NavHostController) {
                                         .size(cellSize)
                                         .fillMaxWidth()) {
                                     Box(modifier = Modifier.padding(10.dp)) {
-                                        PlanPreview(plans[index], navController, cellSize, cellSize)
+                                        PlanPreview(plans[index], navController, cellSize)
                                     }
                                 }
                             }
