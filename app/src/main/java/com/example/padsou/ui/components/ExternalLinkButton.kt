@@ -22,19 +22,15 @@ import androidx.compose.ui.unit.*
 import com.example.padsou.ui.theme.Typography
 
 @Composable
-fun ExternalLinkButton(text: String, backgroundcolor: Color, link: String){
-    val ctx = LocalContext.current
+fun ExternalLinkButton(text: String, backgroundColor: Color, link: String,
+                       onClick: () -> Unit){
 
-    Button(colors = ButtonDefaults.buttonColors(backgroundColor = backgroundcolor),
-        modifier = Modifier.fillMaxWidth().height(50.dp),
+    Button(colors = ButtonDefaults.buttonColors(backgroundColor = backgroundColor),
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(50.dp),
         shape = RoundedCornerShape(20F),
-        onClick = {
-            val urlIntent = Intent(
-                Intent.ACTION_VIEW,
-                Uri.parse(link)
-            )
-            ctx.startActivity(urlIntent)
-        }
+        onClick = onClick
     ) {
         Text(text, fontWeight = FontWeight.Bold, fontSize = 16.sp, fontStyle = FontStyle.Normal,
             fontFamily = Typography.h1.fontFamily, lineHeight = 21.sp, textAlign = TextAlign.Center, color = Color.White)
