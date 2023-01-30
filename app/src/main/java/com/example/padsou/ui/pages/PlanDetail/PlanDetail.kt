@@ -24,35 +24,53 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.example.padsou.R
 import com.example.padsou.models.Plan
+import com.example.padsou.models.User
 import com.example.padsou.ui.components.ExternalLinkButton
 import com.example.padsou.ui.theme.*
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.runBlocking
+import okhttp3.internal.wait
 
 @Composable
 fun PlanDetail(planId: String) {
     val db = Firebase.firestore
     var plan: Plan by remember { mutableStateOf(Plan()) }
 
-    db.collection("plans")
-        .document(planId)
-        .get()
-        .addOnSuccessListener { document ->
-            plan = document.toObject()!!
-            plan!!.id = planId
-        }
+    LaunchedEffect(Unit) {
+        db.collection("plans")
+            .document(planId)
+            .get()
+            .addOnSuccessListener { document ->
+                val tmp = document.toObject<Plan>()!!
+                tmp!!.id = planId
+
+                var task = db.collection("users")
+                    .document(tmp.authorId)
+                    .get()
+                    .addOnSuccessListener { docUser ->
+                        val user: User? = docUser.toObject()
+                        if (user != null) {
+                            tmp.author = user
+                            plan = tmp
+                        }
+                    }
+                //while (!task.isComplete) { }
+            }
+    }
 
     Column(
         Modifier
             .fillMaxSize()
             .background(BackgroundLightGray)
     ) {
-        Box(modifier = Modifier
-            .fillMaxWidth()
-            .height(250.dp)
-            .clip(RoundedCornerShape(0.dp, 0.dp, 30.dp, 30.dp))
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(250.dp)
+                .clip(RoundedCornerShape(0.dp, 0.dp, 30.dp, 30.dp))
         )
         {
             AsyncImage(
@@ -63,23 +81,30 @@ fun PlanDetail(planId: String) {
                     .fillMaxSize()
                     .clip(RoundedCornerShape(0.dp, 0.dp, 30.dp, 30.dp))
             )
-            Box(modifier = Modifier
-                .fillMaxSize()
-                .background(
-                    brush = Brush.horizontalGradient(
-                        colors = listOf(
-                            Color(0xD4000000),
-                            Color.Transparent
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(
+                        brush = Brush.horizontalGradient(
+                            colors = listOf(
+                                Color(0xD4000000),
+                                Color.Transparent
+                            )
                         )
                     )
-                )
             )
             Column(
                 Modifier
                     .fillMaxWidth(0.8F)
-                    .align(Alignment.Center)) {
+                    .align(Alignment.Center)
+            ) {
                 Text(plan.title.uppercase(), style = Typography.h1, fontSize = 22.sp, color = White)
-                Text(text = plan.subTitle, color = White, fontSize = 12.sp, fontWeight = FontWeight(700))
+                Text(
+                    text = plan.subTitle,
+                    color = White,
+                    fontSize = 12.sp,
+                    fontWeight = FontWeight(700)
+                )
             }
         }
         Row(
@@ -117,14 +142,23 @@ fun PlanDetail(planId: String) {
                         Column(
                             Modifier
                                 .padding(start = 10.dp)
-                                .fillMaxWidth(0.5F)) {
-                            Text(text = "Proposé par", fontWeight = FontWeight(500), fontSize = 14.sp ,color = LightGrayText)
-                            Text(text = plan.author.pseudo, fontWeight = FontWeight(700), fontSize = 14.sp)
+                                .fillMaxWidth(0.5F)
+                        ) {
+                            Text(
+                                text = "Proposé par",
+                                fontWeight = FontWeight(500),
+                                fontSize = 14.sp,
+                                color = LightGrayText
+                            )
+                            Text(
+                                text = plan.author.pseudo,
+                                fontWeight = FontWeight(700),
+                                fontSize = 14.sp
+                            )
                         }
                         //stars
-                        Row(Modifier.fillMaxWidth() ) {
-                            for (i in 1..5)
-                            {
+                        Row(Modifier.fillMaxWidth()) {
+                            for (i in 1..5) {
                                 androidx.compose.material.Icon(
                                     painter = painterResource(id = R.drawable.vector),
                                     contentDescription = null,
@@ -139,7 +173,7 @@ fun PlanDetail(planId: String) {
                 }
 
                 Text(
-                    text = "TESTÉE PAR " + plan.nbTest + " GALÉRIEN" + if(plan.nbTest > 1) "S" else "",
+                    text = "TESTÉE PAR " + plan.nbTest + " GALÉRIEN" + if (plan.nbTest > 1) "S" else "",
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(top = 20.dp),
@@ -153,10 +187,12 @@ fun PlanDetail(planId: String) {
                     Intent.ACTION_VIEW,
                     Uri.parse(plan.link)
                 )
-                Row(modifier = Modifier
-                    .fillMaxHeight()
-                    .align(Alignment.CenterHorizontally)
-                    .padding(bottom = 30.dp),Arrangement.Center, Alignment.Bottom) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxHeight()
+                        .align(Alignment.CenterHorizontally)
+                        .padding(bottom = 30.dp), Arrangement.Center, Alignment.Bottom
+                ) {
                     ExternalLinkButton(
                         text = "PROFITER DE L'OFFRE",
                         backgroundColor = MediumBlue,
