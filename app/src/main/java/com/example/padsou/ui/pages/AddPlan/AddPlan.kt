@@ -1,25 +1,22 @@
 package com.example.padsou.ui.pages.AddPlan
 
 import android.content.ContentValues.TAG
+import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.ImageDecoder
-import android.graphics.Paint.Align
 import android.net.Uri
 import android.os.Build
 import android.provider.MediaStore
 import android.util.Log
+import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.*
-import androidx.compose.foundation.gestures.FlingBehavior
-import androidx.compose.foundation.gestures.Orientation
-import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Add
-import androidx.compose.material.icons.rounded.AddCircle
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -29,7 +26,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
@@ -46,7 +42,7 @@ import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import java.io.ByteArrayOutputStream
 
-@OptIn(ExperimentalPagerApi::class, ExperimentalSnapperApi::class)
+@OptIn(ExperimentalPagerApi::class)
 @Composable
 fun AddPlan(navController: NavHostController) {
     // PLAN DATA
@@ -225,7 +221,7 @@ fun AddPlan(navController: NavHostController) {
                                                 onClick = {
                                                     scope.launch {
                                                         // TODO
-                                                        uploadPlan(currentPlan, bitmap.value!!)
+                                                        uploadPlan(currentPlan, bitmap.value!!, context)
                                                         navController.navigate("Home")
                                                     }
                                                 },
@@ -263,7 +259,7 @@ fun AddPlan(navController: NavHostController) {
     }
 }
 
-private fun uploadPlan(plan: Plan, imgBitmap: Bitmap) {
+private fun uploadPlan(plan: Plan, imgBitmap: Bitmap, context: Context) {
     // Create a storage reference from our app
     val storageRef = Firebase.storage.reference
 
@@ -287,10 +283,13 @@ private fun uploadPlan(plan: Plan, imgBitmap: Bitmap) {
             val downloadUri = it.toString()
             plan.image = downloadUri
             plan.nbTest = 0
-            plan.note = 0
+            plan.note = (0..500).random() / 100.0
             plan.subTitle = ""
             plan.authorId = Firebase.auth.currentUser!!.uid
             insertPlanInDatabase(plan)
+
+            Toast.makeText(context, "Le plan à été ajouté",
+                Toast.LENGTH_LONG).show()
         }.addOnFailureListener{ ex ->
             //TODO HANDLE FAILURES
             throw ex
