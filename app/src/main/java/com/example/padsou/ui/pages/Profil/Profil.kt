@@ -116,7 +116,7 @@ fun Profil(navController: NavHostController) {
                         Divider(thickness = 5.dp, color = Color.Transparent)
                         Input(name = passwordValue, onValueChange = { passwordValue = it }, placeholder = "", kbType = KeyboardType.Password)
 
-                        Divider(thickness = 50.dp, color = Color.Transparent)
+                        Spacer(modifier = Modifier.weight(1f))
                         Button(colors = ButtonDefaults.buttonColors(backgroundColor = MediumBlue),
                             modifier = Modifier
                                 .fillMaxWidth()
