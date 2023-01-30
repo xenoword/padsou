@@ -5,6 +5,8 @@ import android.content.ContentValues.TAG
 import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.*
@@ -109,42 +111,24 @@ fun Onboarding(navController: NavHostController)
                 )
                 {
                         page: Int ->
-                    if (plans.size != 0) {
-                        Row(
-                            Modifier,
-                            Arrangement.Center,
-                            verticalAlignment = Alignment.CenterVertically
+                    Row(
+                        Modifier,
+                        Arrangement.Center,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Column(
+                            Modifier
+                                .padding(horizontal = 40.dp)
+                                .clip(shape = RoundedCornerShape(30.dp))
+                                .background(White)
+                                .padding(10.dp)
                         ) {
-                            Column(
-                                Modifier
-                                    .clip(shape = RoundedCornerShape(30.dp))
-                                    .background(White)
-                                    .padding(10.dp)
-                            ) {
-                                Row {
-                                    for (i in 0..1)
-                                    {
+                            if (plans.size != 0) {
+                                LazyVerticalGrid(
+                                    columns = GridCells.Fixed(2)
+                                ) {
+                                    items(4) { i ->
                                         if(plans.size > i+page*4) {
-                                            Column(
-                                                Modifier
-                                                    .padding(10.dp, 10.dp, 5.dp, 5.dp)
-                                            ) {
-                                                Log.d("zebi",plans[i + page*4].title )
-                                                PlanPreview(
-                                                    plan = plans[i + page*4],
-                                                    navController = navController,
-                                                    height = 120.dp,
-                                                    width = 120.dp
-                                                )
-                                            }
-                                        }
-                                    }
-                                }
-                                Row {
-                                    for (i in 2..3)
-                                    {
-                                        if(plans.size > i+page*4)
-                                        {
                                             Column(
                                                 Modifier
                                                     .padding(10.dp, 10.dp, 5.dp, 5.dp)
@@ -190,4 +174,3 @@ fun Onboarding(navController: NavHostController)
         }
     }
 }
-
