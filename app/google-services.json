@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "1025809490041",
-    "project_id": "padsouv2",
-    "storage_bucket": "padsouv2.appspot.com"
+    "project_number": "720481123342",
+    "project_id": "padsou-fec4b",
+    "storage_bucket": "padsou-fec4b.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1025809490041:android:6549481691b27b6e1534a8",
+        "mobilesdk_app_id": "1:720481123342:android:a4edb80d00b9e9f42c905f",
         "android_client_info": {
           "package_name": "com.example.padsou"
         }
       },
       "oauth_client": [
         {
-          "client_id": "1025809490041-7gm7su2qb5h8djdhp2d6ppuvrt2auo59.apps.googleusercontent.com",
+          "client_id": "720481123342-v024oocls279f1ilabtqtjv0id8efri6.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBvnJe2T16TcMrtw8pJlTrrsq_mC2rOtts"
+          "current_key": "AIzaSyBBHXWVQm-eoD_tgRWDbSu0vWHfOpVGIVE"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "1025809490041-7gm7su2qb5h8djdhp2d6ppuvrt2auo59.apps.googleusercontent.com",
+              "client_id": "720481123342-v024oocls279f1ilabtqtjv0id8efri6.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
