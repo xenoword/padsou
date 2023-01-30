@@ -37,6 +37,7 @@ import com.example.padsou.models.Plan
 import com.example.padsou.ui.components.*
 import com.example.padsou.ui.theme.*
 import com.google.accompanist.pager.*
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
@@ -273,7 +274,7 @@ private fun uploadPlan(plan: Plan, imgBitmap: Bitmap) {
     val imgImagesRef = storageRef.child("images/$randName.jpg")
 
     val baos = ByteArrayOutputStream()
-    imgBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+    imgBitmap.compress(Bitmap.CompressFormat.JPEG, 25, baos)
     val data = baos.toByteArray()
 
     var uploadTask = imgRef.putBytes(data)
@@ -288,6 +289,7 @@ private fun uploadPlan(plan: Plan, imgBitmap: Bitmap) {
             plan.nbTest = 0
             plan.note = 0
             plan.subTitle = ""
+            plan.authorId = Firebase.auth.currentUser!!.uid
             insertPlanInDatabase(plan)
         }.addOnFailureListener{ ex ->
             //TODO HANDLE FAILURES

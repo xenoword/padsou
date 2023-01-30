@@ -1,5 +1,10 @@
 package com.example.padsou.ui.pages.Auth
 
+import android.content.Context
+import android.content.Intent
+import android.util.Log
+import android.widget.Toast
+import androidx.activity.ComponentActivity
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material.Divider
@@ -8,21 +13,35 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat.startActivity
 import androidx.navigation.NavHostController
+import com.example.padsou.models.User
 import com.example.padsou.ui.components.Input
-import com.example.padsou.ui.components.NavigateButton
 import com.example.padsou.ui.components.Title
+import com.example.padsou.ui.components.ValidationButton
 import com.example.padsou.ui.theme.MediumBlue
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
+
+
+private lateinit var auth: FirebaseAuth
 
 @Composable
 fun Register(navController: NavHostController) {
     val inputSpacing = 20.dp
+
+    var context = LocalContext.current
+    val db = Firebase.firestore
 
     var mailValue by remember { mutableStateOf("") }
     var pwdValue by remember { mutableStateOf("") }
@@ -60,12 +79,53 @@ fun Register(navController: NavHostController) {
                     modifier = Modifier.fillMaxWidth())
 
             Divider(thickness = 10.dp, color = Color.Transparent)
-            Row(Modifier
+            Row(
+                Modifier
                     .fillMaxWidth()
                     .align(Alignment.CenterHorizontally)) {
-                NavigateButton(
+                ValidationButton(
                         text = "S'INSCRIRE", backgroundcolor = MediumBlue,
-                        navController = navController, classDestination = "Home"
+                        enabled = (!mailValue.isNullOrBlank() && !pwdValue.isNullOrBlank() && !pwdConfirmValue.isNullOrBlank()),
+                        onClick = {
+                            auth = Firebase.auth
+
+                            if (pwdValue != pwdConfirmValue){
+                                pwdValue = ""
+                                pwdConfirmValue = ""
+                                Toast.makeText(context, "Your password must match the confirmation password.",
+                                    Toast.LENGTH_LONG).show()
+                            }
+                            else if (!android.util.Patterns.EMAIL_ADDRESS.matcher(mailValue).matches()){
+                                mailValue = ""
+                                Toast.makeText(context, "Incorrect email.",
+                                    Toast.LENGTH_LONG).show()
+                            }
+                            else{
+
+                                auth.createUserWithEmailAndPassword(mailValue, pwdValue)
+                                    .addOnCompleteListener(ComponentActivity()) { task ->
+                                        if (task.isSuccessful) {
+
+                                            var newUser = User("", mailValue.substring(0,mailValue.indexOf("@")), "https://c0.lestechnophiles.com/www.numerama.com/wp-content/uploads/2017/03/nier2-680x370.jpg?webp=1&key=18e4befb",
+                                            mailValue)
+
+                                            db.collection("users")
+                                                .document(auth.currentUser!!.uid)
+                                                .set(newUser.toFirebaseHashMap())
+                                                .addOnSuccessListener { Log.d("TAG", "Utilisateur créé avec succès!")}
+                                                .addOnFailureListener { e -> Log.w("TAG", "Erreur lors de la création de l'utilisateur !", e) }
+
+                                            val user = auth.currentUser
+                                            if (user != null) {
+                                                updateUI(user, navController, context)
+                                            }
+                                        } else {
+                                            Toast.makeText(context, "Authentication failed. Maybe your password is not long enough",
+                                                Toast.LENGTH_LONG).show()
+                                        }
+                                    }
+                            }
+                        }
                 )
             }
 
@@ -86,4 +146,9 @@ fun Register(navController: NavHostController) {
             }
         }
     }
+}
+
+fun updateUI(account: FirebaseUser, navController: NavHostController, context: Context) {
+    Toast.makeText(context, "You signed in successfully", Toast.LENGTH_LONG).show()
+        navController.navigate("Home")
 }

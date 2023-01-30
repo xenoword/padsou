@@ -1,8 +1,6 @@
 package com.example.padsou.ui.pages.Onboarding
 
 import android.annotation.SuppressLint
-import android.content.ContentValues.TAG
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -27,10 +25,13 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.HorizontalPagerIndicator
 import com.google.accompanist.pager.rememberPagerState
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
-import java.lang.Math.ceil
+
+private lateinit var auth: FirebaseAuth
 
 @SuppressLint("UnrememberedMutableState")
 @OptIn(ExperimentalPagerApi::class)
@@ -40,6 +41,13 @@ fun Onboarding(navController: NavHostController)
     val pagerState = rememberPagerState()
 
     val plans = remember { mutableStateListOf<Plan>() }
+
+
+    auth = Firebase.auth
+
+    val currentUser = auth.currentUser
+    val redirectionPage = if(currentUser != null) "Home" else "Login"
+
 
     val db = Firebase.firestore
 
@@ -91,7 +99,7 @@ fun Onboarding(navController: NavHostController)
         Row(
             Modifier.padding(top = 60.dp)
         ) {
-            Column() {
+            Column {
                 HorizontalPagerIndicator(
                     pagerState = pagerState,
                     activeColor = White,
@@ -169,7 +177,7 @@ fun Onboarding(navController: NavHostController)
                 text = "C'EST PARTI !",
                 backgroundcolor = Pink,
                 navController = navController,
-                classDestination = "Login"
+                classDestination = redirectionPage
             )
         }
     }
