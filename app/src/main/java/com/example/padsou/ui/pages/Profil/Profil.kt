@@ -1,5 +1,6 @@
 package com.example.padsou.ui.pages.Profil
 
+import android.util.Log
 import androidx.compose.material.Divider
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -24,29 +25,47 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import com.example.padsou.models.Plan
+import com.example.padsou.models.User
 import com.example.padsou.ui.components.*
 import com.example.padsou.ui.theme.LightGray
 import com.example.padsou.ui.theme.MediumBlue
-import com.example.padsou.models.User
 import com.example.padsou.ui.theme.Typography
 import com.example.padsou.ui.theme.White
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
-import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalFoundationApi::class)
+private lateinit var auth: FirebaseAuth
+
 @Composable
 fun Profil(navController: NavHostController) {
-
-    val db = Firebase.firestore
 
     var pseudoValue by remember { mutableStateOf("") }
     var mailValue by remember { mutableStateOf("") }
     var passwordValue by remember { mutableStateOf("") }
     var pictureLinkValue by remember { mutableStateOf("") }
 
-    //TODO set values to connected user values
+    val db = Firebase.firestore
+    auth = Firebase.auth
+
+    auth.currentUser?.let {
+        LaunchedEffect(Unit) {
+            db.collection("users")
+                .document(it.uid)
+                .get()
+                .addOnSuccessListener { document ->
+
+                        val user: User = document.toObject()!!
+                        user.id = document.id
+
+                        pseudoValue = user.pseudo
+                        mailValue = user.mail
+                        pictureLinkValue = user.profilePicture
+                    }
+                }
+        }
 
     Surface(modifier = Modifier.fillMaxSize(),
         color = MediumBlue) {
