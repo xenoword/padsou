@@ -1,24 +1,20 @@
 package com.example.padsou.ui.pages.Onboarding
 
 import android.annotation.SuppressLint
-import android.graphics.Color
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-import com.example.padsou.R
 import com.example.padsou.models.Plan
 import com.example.padsou.models.User
 import com.example.padsou.ui.components.NavigateButton
@@ -34,8 +30,6 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
-import kotlinx.coroutines.tasks.await
-import kotlin.math.roundToInt
 
 private lateinit var auth: FirebaseAuth
 
@@ -46,41 +40,46 @@ fun Onboarding(navController: NavHostController)
 {
     val pagerState = rememberPagerState()
 
-    var redirectionPage = ""
+    val plans = remember { mutableStateListOf<Plan>() }
+
+
     auth = Firebase.auth
 
     val currentUser = auth.currentUser
-    if(currentUser != null)
-        redirectionPage = "Home"
-    else
-        redirectionPage = "Login"
+    val redirectionPage = if(currentUser != null) "Home" else "Login"
 
-    val plans = mutableStateListOf<Plan>()
 
     val db = Firebase.firestore
 
-    //get all plans and their authors
-    db.collection("plans")
-        .limit(12)
-        .get()
-        .addOnSuccessListener { result ->
-            plans.clear()
-            for (document in result) {
-                val plan: Plan = document.toObject()
-                plan.id = document.id
+    var pagerCount by remember { mutableStateOf(1) }
 
-                db.collection("users")
-                    .document(plan.authorId)
-                    .get()
-                    .addOnSuccessListener { docUser ->
-                        val user: User? = docUser.toObject()
-                        if(user != null){
-                            plan.author = user
+    LaunchedEffect(Unit) {
+        db.collection("plans")
+            .limit(12)
+            .get()
+            .addOnSuccessListener { result ->
+                plans.clear()
+                for (document in result) {
+                    val plan: Plan = document.toObject()
+                    plan.id = document.id
+
+                    db.collection("users")
+                        .document(plan.authorId)
+                        .get()
+                        .addOnSuccessListener { docUser ->
+                            val user: User? = docUser.toObject()
+                            if(user != null){
+                                plan.author = user
+                            }
                         }
-                    }
-                plans.add(plan)
+                    plans.add(plan)
+                }
+                pagerCount = if (plans.size != 0) kotlin.math.ceil(plans.size / 4.0).toInt() else 1
             }
-        }
+    }
+
+    //get all plans and their authors
+
 
     Column(
         Modifier
@@ -100,7 +99,7 @@ fun Onboarding(navController: NavHostController)
         Row(
             Modifier.padding(top = 60.dp)
         ) {
-            Column() {
+            Column {
                 HorizontalPagerIndicator(
                     pagerState = pagerState,
                     activeColor = White,
@@ -113,69 +112,43 @@ fun Onboarding(navController: NavHostController)
                         .height(40.dp)
                         .padding(bottom = 30.dp),
                 )
+
                 HorizontalPager(
-                    count = 3,
+                    count = pagerCount,
                     state = pagerState
                 )
                 {
-                    if (plans.size != 0) {
-                        Row(
-                            Modifier,
-                            Arrangement.Center,
-                            verticalAlignment = Alignment.CenterVertically
+                        page: Int ->
+                    Row(
+                        Modifier,
+                        Arrangement.Center,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Column(
+                            Modifier
+                                .padding(horizontal = 40.dp)
+                                .clip(shape = RoundedCornerShape(30.dp))
+                                .background(White)
+                                .padding(10.dp)
                         ) {
-                            Column(
-                                Modifier
-                                    .clip(shape = RoundedCornerShape(30.dp))
-                                    .background(White)
-                                    .padding(10.dp)
-                            ) {
-                                Row {
-                                    Column(
-                                        Modifier
-                                            .padding(10.dp, 10.dp, 5.dp, 5.dp)
-                                    ) {
-                                        PlanPreview(
-                                            plan = plans[0],
-                                            navController = navController,
-                                            height = 120.dp,
-                                            width = 120.dp
-                                        )
-                                    }
-                                    Column(
-                                        Modifier
-                                            .padding(5.dp, 10.dp, 10.dp, 5.dp)
-                                    ) {
-                                        PlanPreview(
-                                            plan = plans[0],
-                                            navController = navController,
-                                            height = 120.dp,
-                                            width = 120.dp
-                                        )
-                                    }
-                                }
-                                Row {
-                                    Column(
-                                        Modifier
-                                            .padding(10.dp, 10.dp, 5.dp, 5.dp)
-                                    ) {
-                                        PlanPreview(
-                                            plan = plans[0],
-                                            navController = navController,
-                                            height = 120.dp,
-                                            width = 120.dp
-                                        )
-                                    }
-                                    Column(
-                                        Modifier
-                                            .padding(5.dp, 10.dp, 10.dp, 5.dp)
-                                    ) {
-                                        PlanPreview(
-                                            plan = plans[0],
-                                            navController = navController,
-                                            height = 120.dp,
-                                            width = 120.dp
-                                        )
+                            if (plans.size != 0) {
+                                LazyVerticalGrid(
+                                    columns = GridCells.Fixed(2)
+                                ) {
+                                    items(4) { i ->
+                                        if(plans.size > i+page*4) {
+                                            Column(
+                                                Modifier
+                                                    .padding(10.dp, 10.dp, 5.dp, 5.dp)
+                                            ) {
+                                                PlanPreview(
+                                                    plan = plans[i + page*4],
+                                                    navController = navController,
+                                                    height = 120.dp,
+                                                    width = 120.dp
+                                                )
+                                            }
+                                        }
                                     }
                                 }
                             }
@@ -188,7 +161,7 @@ fun Onboarding(navController: NavHostController)
         Text(modifier = Modifier
             .fillMaxWidth(0.6F)
             .align(Alignment.CenterHorizontally)
-            .padding(top=30.dp),
+            .padding(top = 30.dp),
             text = "Accède aux 500 bons plans qu'on te propose chaque mois",
             fontSize = 16.sp,
             color = White,

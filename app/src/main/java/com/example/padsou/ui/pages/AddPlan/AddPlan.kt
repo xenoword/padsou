@@ -114,7 +114,7 @@ fun AddPlan(navController: NavHostController) {
                         HorizontalPager(
                             count = 2,
                             state = pagerState,
-                            //userScrollEnabled = false, TODO
+                            userScrollEnabled = false,
                         ) { page: Int ->
                             when (page) {
                                 // PAGE 1 ---------------------------------
