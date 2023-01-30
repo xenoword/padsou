@@ -31,6 +31,7 @@ import com.example.padsou.ui.theme.LightGray
 import com.example.padsou.ui.theme.MediumBlue
 import com.example.padsou.R
 import com.example.padsou.models.User
+import com.example.padsou.ui.theme.White
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
@@ -74,7 +75,7 @@ fun Home(navController: NavHostController) {
             Divider(thickness = 40.dp, color = Color.Transparent)
             Column(modifier = Modifier.fillMaxWidth(0.85f)
             ) {
-                Title("COUCOU TOI,", Color.White)
+                Title("COUCOU TOI,", White)
                 Divider(thickness = 0.dp, color = Color.Transparent)
                 Text("T'es en manque de thunes ?",
                         color = Color.White,
