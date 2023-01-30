@@ -1,12 +1,13 @@
 package com.example.padsou.ui.pages.PlanDetail
 
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.material.icons.Icons
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -14,6 +15,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -22,10 +24,9 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.example.padsou.R
 import com.example.padsou.models.Plan
-import com.example.padsou.models.User
 import com.example.padsou.ui.components.ExternalLinkButton
-import com.example.padsou.ui.components.Title
 import com.example.padsou.ui.theme.*
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
@@ -147,17 +148,31 @@ fun PlanDetail(planId: String) {
                     textAlign = TextAlign.Center
                 )
 
+                val ctx = LocalContext.current
+                val urlIntent = Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse(plan.link)
+                )
                 Row(modifier = Modifier
                     .fillMaxHeight()
                     .align(Alignment.CenterHorizontally)
                     .padding(bottom = 30.dp),Arrangement.Center, Alignment.Bottom) {
                     ExternalLinkButton(
                         text = "PROFITER DE L'OFFRE",
-                        backgroundcolor = MediumBlue,
-                        link = plan.link
+                        backgroundColor = MediumBlue,
+                        link = plan.link,
+                        onClick = {
+                            incrementNbTestCounter(plan.id)
+                            ctx.startActivity(urlIntent)
+                        }
                     )
                 }
             }
         }
     }
+}
+
+private fun incrementNbTestCounter(planId: String) {
+    Firebase.firestore.collection("plans").document(planId)
+        .update("nbTest", FieldValue.increment(1))
 }
