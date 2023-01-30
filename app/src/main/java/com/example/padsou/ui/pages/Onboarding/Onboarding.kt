@@ -29,11 +29,15 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.HorizontalPagerIndicator
 import com.google.accompanist.pager.rememberPagerState
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.tasks.await
 import kotlin.math.roundToInt
+
+private lateinit var auth: FirebaseAuth
 
 @SuppressLint("UnrememberedMutableState")
 @OptIn(ExperimentalPagerApi::class)
@@ -41,6 +45,15 @@ import kotlin.math.roundToInt
 fun Onboarding(navController: NavHostController)
 {
     val pagerState = rememberPagerState()
+
+    var redirectionPage = ""
+    auth = Firebase.auth
+
+    val currentUser = auth.currentUser
+    if(currentUser != null)
+        redirectionPage = "Home"
+    else
+        redirectionPage = "Login"
 
     val plans = mutableStateListOf<Plan>()
 
@@ -191,7 +204,7 @@ fun Onboarding(navController: NavHostController)
                 text = "C'EST PARTI !",
                 backgroundcolor = Pink,
                 navController = navController,
-                classDestination = "Login"
+                classDestination = redirectionPage
             )
         }
     }
