@@ -110,7 +110,7 @@ fun Register(navController: NavHostController) {
                                             mailValue)
 
                                             db.collection("users")
-                                                .document()
+                                                .document(auth.currentUser!!.uid)
                                                 .set(newUser.toFirebaseHashMap())
                                                 .addOnSuccessListener { Log.d("TAG", "Utilisateur créé avec succès!")}
                                                 .addOnFailureListener { e -> Log.w("TAG", "Erreur lors de la création de l'utilisateur !", e) }
@@ -120,7 +120,7 @@ fun Register(navController: NavHostController) {
                                                 updateUI(user, navController, context)
                                             }
                                         } else {
-                                            Toast.makeText(context, "Authentication failed. Maybe your password is not long enought",
+                                            Toast.makeText(context, "Authentication failed. Maybe your password is not long enough",
                                                 Toast.LENGTH_LONG).show()
                                         }
                                     }

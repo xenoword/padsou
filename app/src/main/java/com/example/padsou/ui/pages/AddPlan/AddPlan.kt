@@ -273,7 +273,7 @@ private fun uploadPlan(plan: Plan, imgBitmap: Bitmap) {
     val imgImagesRef = storageRef.child("images/$randName.jpg")
 
     val baos = ByteArrayOutputStream()
-    imgBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+    imgBitmap.compress(Bitmap.CompressFormat.JPEG, 25, baos)
     val data = baos.toByteArray()
 
     var uploadTask = imgRef.putBytes(data)
