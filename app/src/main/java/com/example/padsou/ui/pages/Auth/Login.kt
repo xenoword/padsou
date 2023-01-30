@@ -1,5 +1,8 @@
 package com.example.padsou.ui.pages.Auth
 
+import android.content.Context
+import android.widget.Toast
+import androidx.activity.ComponentActivity
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material.Divider
@@ -8,6 +11,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.input.KeyboardType
@@ -21,12 +25,21 @@ import com.example.padsou.navigation.NavGraph
 import com.example.padsou.ui.components.Input
 import com.example.padsou.ui.components.NavigateButton
 import com.example.padsou.ui.components.Title
+import com.example.padsou.ui.components.ValidationButton
 import com.example.padsou.ui.theme.MediumBlue
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
+
+private lateinit var auth: FirebaseAuth
 
 @Composable
 fun Login(navController: NavHostController) {
     var mailValue by remember { mutableStateOf("") }
     var pwdValue by remember { mutableStateOf("") }
+
+    var context = LocalContext.current
 
     Column(modifier = Modifier
             .fillMaxSize(),
@@ -56,8 +69,24 @@ fun Login(navController: NavHostController) {
 
             Divider(thickness = 40.dp, color = Color.Transparent)
             Row() {
-                NavigateButton(text = "SE CONNECTER", backgroundcolor = MediumBlue,
-                        navController = navController, classDestination = "Home")
+                ValidationButton(text = "SE CONNECTER", backgroundcolor = MediumBlue,
+                    enabled = (!mailValue.isNullOrBlank() && !pwdValue.isNullOrBlank()),
+                    onClick = {
+                        auth = Firebase.auth
+
+                        auth.signInWithEmailAndPassword(mailValue, pwdValue)
+                            .addOnCompleteListener(ComponentActivity()) { task ->
+                                if (task.isSuccessful) {
+                                    val user = auth.currentUser
+                                    if (user != null) {
+                                        updateUILogIn(user, navController, context)
+                                    }
+                                } else {
+                                    Toast.makeText(context, "Authentication failed.",
+                                        Toast.LENGTH_SHORT).show()
+                                }
+                            }
+                    })
             }
 
             Spacer(modifier = Modifier.weight(1f))
@@ -77,4 +106,9 @@ fun Login(navController: NavHostController) {
             }
         }
     }
+}
+
+fun updateUILogIn(account: FirebaseUser, navController: NavHostController, context: Context) {
+    Toast.makeText(context, "You signed in successfully", Toast.LENGTH_LONG).show()
+    navController.navigate("Home")
 }
