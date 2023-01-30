@@ -8,7 +8,6 @@ import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavHostController
 import androidx.compose.ui.text.font.FontStyle
@@ -18,9 +17,9 @@ import androidx.compose.ui.unit.*
 import com.example.padsou.ui.theme.Typography
 
 @Composable
-fun NavigateButton(text: String, backgroundcolor: Color, navController: NavHostController, classDestination: String){
+fun NavigateButton(text: String, backgroundColor: Color, navController: NavHostController, classDestination: String){
 
-    Button(colors = ButtonDefaults.buttonColors(backgroundColor = backgroundcolor),
+    Button(colors = ButtonDefaults.buttonColors(backgroundColor = backgroundColor),
         modifier = Modifier.fillMaxWidth().height(50.dp),
         shape = RoundedCornerShape(20F),
         onClick = {navController.navigate(classDestination)}

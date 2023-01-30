@@ -1,10 +1,8 @@
-package com.example.padsou.ui.pages.Home
+package com.example.padsou.ui.pages.home
 
-import android.util.Log
 import androidx.compose.material.Divider
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -15,7 +13,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -36,11 +33,10 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun Home(navController: NavHostController) {
 
-    var plans by remember { mutableStateOf(mutableListOf<Plan>()) }
+    val plans by remember { mutableStateOf(mutableListOf<Plan>()) }
     val db = Firebase.firestore
 
     //get all plans and their authors
@@ -49,21 +45,19 @@ fun Home(navController: NavHostController) {
         .addOnSuccessListener { result ->
             plans.clear()
             for (document in result) {
-                var plan: Plan? = document.toObject()
-                if (plan != null) {
+                val plan: Plan = document.toObject()
                     plan.id = document.id
 
                     db.collection("users")
                         .document(plan.authorId)
                         .get()
                         .addOnSuccessListener { docUser ->
-                            var user: User? = docUser.toObject()
+                            val user: User? = docUser.toObject()
                             if(user != null){
                                 plan.author = user
                             }
                         }
                     plans.add(plan)
-                }
             }
         }
 
@@ -170,19 +164,4 @@ fun Home(navController: NavHostController) {
             }
         }
     }
-}
-
-@Composable
-fun CategoryButton(navController: NavHostController, searchTerm: String,
-                   iconImgVector: ImageVector) {
-    IconButton(
-            onClick = { /* navController.navigate( ... ) TODO */ },
-            modifier = Modifier
-                    .size(50.dp)
-                    .background(LightGray, RoundedCornerShape(5.dp))) {
-        Icon(iconImgVector, null,
-                Modifier.fillMaxSize(0.8f),
-                tint = MediumBlue)
-    }
-
 }

@@ -1,4 +1,4 @@
-package com.example.padsou.ui.pages.Auth
+package com.example.padsou.ui.pages.auth
 
 import android.content.Context
 import android.util.Log
@@ -26,7 +26,6 @@ import com.example.padsou.ui.components.Title
 import com.example.padsou.ui.components.ValidationButton
 import com.example.padsou.ui.theme.MediumBlue
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -38,7 +37,7 @@ private lateinit var auth: FirebaseAuth
 fun Register(navController: NavHostController) {
     val inputSpacing = 20.dp
 
-    var context = LocalContext.current
+    val context = LocalContext.current
     val db = Firebase.firestore
 
     var mailValue by remember { mutableStateOf("") }
@@ -83,7 +82,7 @@ fun Register(navController: NavHostController) {
                     .align(Alignment.CenterHorizontally)) {
                 ValidationButton(
                         text = "S'INSCRIRE", backgroundcolor = MediumBlue,
-                        enabled = (!mailValue.isNullOrBlank() && !pwdValue.isNullOrBlank() && !pwdConfirmValue.isNullOrBlank()),
+                        enabled = (mailValue.isNotBlank() && pwdValue.isNotBlank() && pwdConfirmValue.isNotBlank()),
                         onClick = {
                             auth = Firebase.auth
 
@@ -104,7 +103,7 @@ fun Register(navController: NavHostController) {
                                     .addOnCompleteListener(ComponentActivity()) { task ->
                                         if (task.isSuccessful) {
 
-                                            var newUser = User("", mailValue.substring(0,mailValue.indexOf("@")), "https://c0.lestechnophiles.com/www.numerama.com/wp-content/uploads/2017/03/nier2-680x370.jpg?webp=1&key=18e4befb",
+                                            val newUser = User("", mailValue.substring(0,mailValue.indexOf("@")), "https://c0.lestechnophiles.com/www.numerama.com/wp-content/uploads/2017/03/nier2-680x370.jpg?webp=1&key=18e4befb",
                                             mailValue)
 
                                             db.collection("users")
@@ -113,10 +112,7 @@ fun Register(navController: NavHostController) {
                                                 .addOnSuccessListener { Log.d("TAG", "Utilisateur créé avec succès!")}
                                                 .addOnFailureListener { e -> Log.w("TAG", "Erreur lors de la création de l'utilisateur !", e) }
 
-                                            val user = auth.currentUser
-                                            if (user != null) {
-                                                updateUI(user, navController, context)
-                                            }
+                                            updateUI( navController, context)
                                         } else {
                                             Toast.makeText(context, "Authentication failed. Maybe your password is not long enough",
                                                 Toast.LENGTH_LONG).show()
@@ -146,7 +142,7 @@ fun Register(navController: NavHostController) {
     }
 }
 
-fun updateUI(account: FirebaseUser, navController: NavHostController, context: Context) {
+fun updateUI(navController: NavHostController, context: Context) {
     Toast.makeText(context, "You signed in successfully", Toast.LENGTH_LONG).show()
         navController.navigate("Home")
 }

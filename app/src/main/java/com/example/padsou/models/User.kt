@@ -7,8 +7,7 @@ data class User(
     val mail: String = ""
 )
 {
-
-    public fun toFirebaseHashMap(): HashMap<String, Any> {
+    fun toFirebaseHashMap(): HashMap<String, Any> {
         return hashMapOf(
             "mail" to mail,
             "pseudo" to pseudo,

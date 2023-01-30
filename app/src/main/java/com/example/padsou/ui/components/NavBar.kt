@@ -24,9 +24,9 @@ fun NavBar(navController: NavHostController) {
     {
         if (navController.currentBackStackEntry?.destination?.route === route)
         {
-            return MediumBlue;
+            return MediumBlue
         }
-        return LightGrayIcon;
+        return LightGrayIcon
     }
 
     Card(elevation = 16.dp, shape = RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp)) {
