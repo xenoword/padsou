@@ -1,7 +1,6 @@
 package com.example.padsou.ui.pages.Auth
 
 import android.content.Context
-import android.content.Intent
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.ComponentActivity
@@ -20,7 +19,6 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
-import androidx.core.content.ContextCompat.startActivity
 import androidx.navigation.NavHostController
 import com.example.padsou.models.User
 import com.example.padsou.ui.components.Input
