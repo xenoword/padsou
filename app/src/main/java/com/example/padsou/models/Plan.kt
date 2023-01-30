@@ -12,7 +12,7 @@ data class Plan(
     var image: String ="",
     var authorId: String = "",
     var nbTest: Int = 0,
-    var note: Int = 0,
+    var note: Double = 0.0,
     var description: String = "",
     var link: String = "",
     var author: User = User()

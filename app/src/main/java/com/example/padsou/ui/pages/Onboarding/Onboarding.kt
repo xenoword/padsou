@@ -1,6 +1,7 @@
 package com.example.padsou.ui.pages.Onboarding
 
 import android.annotation.SuppressLint
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -40,8 +41,7 @@ fun Onboarding(navController: NavHostController)
 {
     val pagerState = rememberPagerState()
 
-    val plans = remember { mutableStateListOf<Plan>() }
-
+    var plans by remember { mutableStateOf(mutableListOf<Plan>()) }
 
     auth = Firebase.auth
 
@@ -53,6 +53,7 @@ fun Onboarding(navController: NavHostController)
 
     var pagerCount by remember { mutableStateOf(1) }
 
+    //get all plans and their authors
     LaunchedEffect(Unit) {
         db.collection("plans")
             .limit(12)
@@ -63,6 +64,7 @@ fun Onboarding(navController: NavHostController)
                     val plan: Plan = document.toObject()
                     plan.id = document.id
 
+                    Log.d("UwU", plan.authorId)
                     db.collection("users")
                         .document(plan.authorId)
                         .get()
@@ -71,15 +73,12 @@ fun Onboarding(navController: NavHostController)
                             if(user != null){
                                 plan.author = user
                             }
+                            plans.add(plan)
+                            pagerCount = if (plans.size != 0) kotlin.math.ceil(plans.size / 4.0).toInt() else 1
                         }
-                    plans.add(plan)
                 }
-                pagerCount = if (plans.size != 0) kotlin.math.ceil(plans.size / 4.0).toInt() else 1
             }
     }
-
-    //get all plans and their authors
-
 
     Column(
         Modifier
@@ -126,14 +125,15 @@ fun Onboarding(navController: NavHostController)
                     ) {
                         Column(
                             Modifier
-                                .padding(horizontal = 40.dp)
+                                .size(290.dp)
                                 .clip(shape = RoundedCornerShape(30.dp))
                                 .background(White)
                                 .padding(10.dp)
                         ) {
                             if (plans.size != 0) {
                                 LazyVerticalGrid(
-                                    columns = GridCells.Fixed(2)
+                                    columns = GridCells.Fixed(2),
+                                    userScrollEnabled = false,
                                 ) {
                                     items(4) { i ->
                                         if(plans.size > i+page*4) {
@@ -144,8 +144,7 @@ fun Onboarding(navController: NavHostController)
                                                 PlanPreview(
                                                     plan = plans[i + page*4],
                                                     navController = navController,
-                                                    height = 120.dp,
-                                                    width = 120.dp
+                                                    size = 120.dp,
                                                 )
                                             }
                                         }
